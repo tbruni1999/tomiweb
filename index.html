@@ -1309,13 +1309,37 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
 }else{document.querySelectorAll('.up').forEach(el=>el.classList.add('in'))}
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="./vendor/three-r128.min.js"></script>
+<script>
+/* WebGL resiliente: Three.js es local y los canvas pueden recuperarse si el navegador pierde el contexto. */
+(function(){
+  window.__webglOk = typeof THREE !== 'undefined';
+  if(!window.__webglOk){
+    console.error('Three.js local no pudo inicializarse.');
+    return;
+  }
+  ['scene','tel','esfera','estante','cardvitrina'].forEach(function(id){
+    var cv=document.getElementById(id);
+    if(!cv)return;
+    cv.addEventListener('webglcontextlost',function(ev){
+      ev.preventDefault();
+      cv.dataset.webglLost='1';
+      console.warn('WebGL perdido en #'+id+'; esperando restauración automática.');
+    },false);
+    cv.addEventListener('webglcontextrestored',function(){
+      delete cv.dataset.webglLost;
+      console.info('WebGL restaurado en #'+id+'.');
+      try{ window.dispatchEvent(new Event('resize')); }catch(e){}
+    },false);
+  });
+})();
+</script>
 <script>
 (function(){
   var cv=document.getElementById('scene');
   if(!cv||typeof THREE==='undefined')return;
   var wrap=cv.parentNode,rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.toneMapping=THREE.ACESFilmicToneMapping;
@@ -1551,7 +1575,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   var cv=document.getElementById('tel');
   if(!cv||typeof THREE==='undefined')return;
   var wrap=cv.parentNode,rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.toneMapping=THREE.ACESFilmicToneMapping;
@@ -1743,7 +1767,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   var cv=document.getElementById('esfera');
   if(!cv||typeof THREE==='undefined')return;
   var seccion=document.getElementById('sobre'),rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.setClearAlpha(0);
@@ -2599,7 +2623,7 @@ var ESTANTE_GLB='data:model/gltf-binary;base64,Z2xURgIAAAA0HgAA2AMAAEpTT057ImFzc
   var seccion=document.getElementById('trofeos');
   if(!cv||!seccion||typeof THREE==='undefined')return;
   var rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.setClearAlpha(0);
@@ -2816,7 +2840,7 @@ var ESTANTE_GLB='data:model/gltf-binary;base64,Z2xURgIAAAA0HgAA2AMAAEpTT057ImFzc
   var cv=document.getElementById('cardvitrina');
   if(!cv||typeof THREE==='undefined')return;
   var card=cv.parentNode,rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.setClearAlpha(0);
