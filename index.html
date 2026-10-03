@@ -404,51 +404,43 @@ body.viendo-caso #casos{display:block}
   .tforma{display:none}
 }
 
-/* --- sobre mi: dos capitulos con el asset fijo --- */
-.sobre{position:relative;padding-left:var(--gut);padding-right:var(--gut);
-  padding-bottom:clamp(30px,5vh,60px)}
-.sobre .caso-nav{position:absolute;left:var(--gut);right:var(--gut);top:0;z-index:3;
-  margin-bottom:0}   /* fuera del flujo: si no, empuja el primer bloque hacia abajo */
+/* --- sobre mi: capitulos en una columna centrada; cada titulo lleva su forma 3D chiquita --- */
+.sobre{position:relative;padding:0 var(--gut) clamp(40px,8vh,100px)}
+.sobre .caso-nav{margin-bottom:0}
 .sobre .caso-nav b{color:var(--bone);font-weight:700}
-.sfijo{position:sticky;top:0;height:100svh;z-index:1;margin-bottom:-100svh;pointer-events:none}
-#esfera{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y;pointer-events:auto}
-#esfera:active{cursor:grabbing}
-/* foto · texto · forma 3D en un contenedor centrado: nada se va contra los bordes.
-   .sforma es una columna vacia que el script mide para ubicar la forma */
-.spanel{position:relative;z-index:2;min-height:100svh;display:grid;align-items:center;
-  grid-template-columns:minmax(0,.62fr) minmax(0,1fr) minmax(0,1fr);column-gap:clamp(28px,4vw,56px);
-  width:100%;max-width:1120px;margin:0 auto;
-  padding-left:var(--pad);padding-right:var(--pad);pointer-events:none}
-.spanel>.sbloque{grid-column:1 / 3;grid-row:1;width:100%;max-width:480px;justify-self:center}
-.spanel-1>.card{grid-column:1;grid-row:1}
-.spanel-1>.sbloque{grid-column:2;max-width:none}
-.sforma{grid-column:3;grid-row:1;height:1px}
-.sbloque{pointer-events:auto}
+/* cada capitulo: el texto y, si lo tiene, un costado de 300 px (la foto, la lista) */
+.scapitulo{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);
+  column-gap:clamp(32px,6vw,96px);row-gap:clamp(28px,5vh,44px);align-items:start;max-width:1040px;margin:0 auto;
+  padding:clamp(56px,11vh,120px) var(--pad);border-bottom:1px solid var(--line)}
+.scapitulo:last-of-type{border-bottom:0}
+.sbloque{max-width:600px}
+.scap{display:block;color:var(--rim);margin-bottom:clamp(14px,2.2vh,22px)}
+.stitulo{display:flex;align-items:center;gap:clamp(14px,2vw,26px);margin-bottom:clamp(22px,3.4vh,36px)}
+.stitulo .ctitulo{margin:0}
+.sforma{flex:0 0 auto;display:block;width:clamp(58px,6.4vw,92px);height:clamp(58px,6.4vw,92px)}
 @media(min-width:861px){.sobre .ctitulo,.trofeos .ctitulo{font-size:clamp(28px,3.2vw,46px)}}
-.scap{display:block;color:var(--rim);margin-bottom:clamp(12px,2vh,20px)}
 .sbloque .note{margin-bottom:16px}
 .sdatos{display:flex;flex-direction:column;gap:5px;margin-top:clamp(14px,2.4vh,26px)}
-.shab{display:flex;flex-direction:column;gap:11px;margin-top:clamp(16px,2.6vh,28px)}
+.sdatos b{color:var(--bone);font-weight:400}
+.shab{display:flex;flex-direction:column;gap:11px}
 .shab span{display:block;padding-top:10px;border-top:1px solid var(--line);
   text-transform:none;letter-spacing:var(--tr-text);line-height:1.6}
 .shab b{display:block;font-weight:700;text-transform:uppercase;
   letter-spacing:var(--tr-caps);color:var(--bone);margin-bottom:3px}
-.sdatos b{color:var(--bone);font-weight:400}
-.pista{position:absolute;right:calc(var(--gut) + var(--pad));bottom:38px;z-index:2;color:var(--dim)}
 @media(max-width:860px){
-  .spanel{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-    gap:clamp(28px,5vw,72px);max-width:none}
+  .scapitulo{grid-template-columns:minmax(0,1fr)}
   .sbloque{max-width:none}
-  .sforma{display:none}
-  #esfera{opacity:.4}
-  .pista{display:none}
+}
+@media(max-width:620px){
+  .stitulo{gap:12px}
+  .sforma{width:44px;height:44px}
 }
 
-/* --- card del primer capitulo --- */
+/* --- foto del primer capitulo --- */
 .card{position:relative;width:100%;aspect-ratio:3/4;
   margin:0;overflow:hidden;border:1px solid var(--line);background:var(--surf);
   transform:perspective(1100px) rotateY(calc(var(--lx)*-5deg)) rotateX(calc(var(--ly)*3.4deg));
-  transition:border-color .4s;pointer-events:auto}
+  transition:border-color .4s}
 .card:hover{border-color:var(--rim)}
 /* mismo encuadre alto que la foto del home, con margen para el parallax del mouse */
 .card-foto{position:absolute;left:-6%;top:-48%;width:112%;height:192%;display:block;
@@ -459,10 +451,8 @@ body.viendo-caso #casos{display:block}
   background:linear-gradient(to bottom,var(--void-t),var(--void) 84%)}
 .card figcaption{position:absolute;left:12px;bottom:11px;z-index:2;
   font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--ash)}
-@media(max-width:860px){
-  .card{width:min(74%,300px)}
-}
-@media(max-width:620px){.card{width:100%;min-height:240px;aspect-ratio:4/3}}
+@media(max-width:860px){.card{width:min(100%,340px)}}
+@media(max-width:620px){.card{width:100%;aspect-ratio:4/3}}
 
 .obra{position:relative;padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);padding-bottom:clamp(80px,13vh,150px)}
 .obra .grid{padding:0 var(--gut)}
@@ -524,6 +514,13 @@ body.viendo-caso #casos{display:block}
   .pdat{grid-column:2;text-align:left}
 }
 @media(prefers-reduced-motion:reduce){.up{opacity:1;transform:none}}
+
+/* --- titulos con entrada de maquina de escribir (el script parte cada titulo en letras) --- */
+.tw .tw-c{opacity:0}
+.tw.tw-go .tw-c{animation:tw-letra calc(var(--tw-v)*1.4) linear both;animation-delay:calc(var(--i)*var(--tw-v))}
+.tw.tw-go .tw-c.tw-fin{animation:tw-fin 1.6s linear both;animation-delay:calc(var(--i)*var(--tw-v))}
+@keyframes tw-letra{0%{opacity:0}.1%,99%{opacity:1;box-shadow:.07em 0 0 var(--rim)}100%{opacity:1;box-shadow:none}}
+@keyframes tw-fin{0%{opacity:0}.1%,25%,50.1%,75%{opacity:1;box-shadow:.07em 0 0 var(--rim)}25.1%,50%,75.1%,100%{opacity:1;box-shadow:none}}
 
 /* --- ajustes para pantallas angostas --- */
 /* --- movil: respiracion, areas tactiles y jerarquia --- */
@@ -596,20 +593,8 @@ body.viendo-caso #casos{display:block}
   .cpie{flex-direction:column;gap:6px}
   .obra{padding-top:clamp(40px,7vh,80px)}
   .idx{display:none}   /* las disciplinas viven en el menu */
-  .spanel{min-height:auto;padding-top:clamp(30px,7vh,60px);padding-bottom:clamp(30px,7vh,60px)}
-  .sfijo{height:70svh;margin-bottom:-70svh}
 }
 /* --- movil: nada se superpone --- */
-@media(max-width:620px){
-  /* sobre mi: la forma vive en una banda fija arriba y el texto pasa por debajo */
-  .sobre{padding-top:64px}
-  .sfijo{top:0;height:38svh;margin-bottom:0;z-index:3;
-    background:linear-gradient(to bottom,var(--void) 0,var(--void) 78%,rgba(0,0,0,0) 100%)}
-  #esfera{opacity:1;pointer-events:none}
-  .spanel{z-index:1}
-  .sobre .caso-nav{position:sticky;top:0;z-index:4;background:var(--void);margin:0 calc(-1*var(--gut));padding-left:calc(var(--gut) + var(--pad));padding-right:calc(var(--gut) + var(--pad))}
-  .sobre{padding-top:0}
-}
 @media(max-width:860px){
   /* trofeos: texto arriba, vitrina en su propia banda abajo */
   .trofeos{justify-content:flex-start}
@@ -914,17 +899,11 @@ body.viendo-caso #casos{display:block}
     <b class="mono">Sobre mí</b>
   </div>
 
-  <div class="sfijo"><canvas id="esfera"></canvas></div>
-
-  <div class="spanel spanel-1">
-    <figure class="card up">
-      <img class="card-foto" src="assets/retrato.webp" alt="" width="900" height="1200" loading="lazy" decoding="async" data-vel="-44">
-      <span class="card-velo" aria-hidden="true"></span>
-      <figcaption class="mono">Montevideo · 2026</figcaption>
-    </figure>
+  <!-- cada titulo lleva su forma: 01 esfera, 02 cubo, 03 piramide (se arma desde la anterior al entrar en pantalla) -->
+  <div class="scapitulo">
     <div class="sbloque">
       <span class="scap mono">01 — Trabajo</span>
-      <h2 class="ctitulo">Diez años<br><u>mirando cosas.</u></h2>
+      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Tiempo y práctica:<br><u>así llegué acá.</u></h2></div>
       <p class="note">Empecé haciendo flyers para fiestas que nadie recuerda y terminé dirigiendo
       piezas para marcas que sí. En el medio aprendí que la parte difícil nunca es el render:
       es entender qué tiene que sentir alguien cuando lo ve.</p>
@@ -936,37 +915,37 @@ body.viendo-caso #casos{display:block}
         <span class="mono">Herramientas <b>Figma · Illustrator · Photoshop · Claude · GitHub</b></span>
       </div>
     </div>
-    <div class="sforma" aria-hidden="true"></div>
+    <figure class="card up">
+      <img class="card-foto" src="assets/retrato.webp" alt="" width="900" height="1200" loading="lazy" decoding="async" data-vel="-44">
+      <span class="card-velo" aria-hidden="true"></span>
+      <figcaption class="mono">Montevideo · 2026</figcaption>
+    </figure>
   </div>
 
-  <div class="spanel">
+  <div class="scapitulo">
     <div class="sbloque">
       <span class="scap mono">02 — Fuera de pantalla</span>
-      <h2 class="ctitulo">Y cuando<br><u>cierro la compu.</u></h2>
+      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Y cuando<br><u>cierro la compu.</u></h2></div>
       <p class="note">Salgo a caminar con mi perro, que opina poco pero opina. Cocino más de lo
       que como. Me obsesiono con cosas que (a veces) termino y escucho demasiada música.</p>
-      <p class="note">Me gusta el cine viejo, los fierros oxidados, las ferias de domingo y
-      cualquier cosa que tenga botones físicos.</p>
+      <p class="note">Y me gustan los jueguitos de computadora, más de lo que debería admitir en un portfolio.</p>
     </div>
   </div>
 
-  <div class="spanel">
+  <div class="scapitulo">
     <div class="sbloque">
       <span class="scap mono">03 — Habilidades</span>
-      <h2 class="ctitulo">Lo que<br><u>sé hacer.</u></h2>
+      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Lo que<br><u>sé hacer.</u></h2></div>
       <p class="note">Diseño de interfaces de punta a punta: investigación, flujos, UI y
-      sistemas. Motion para que las pantallas se entiendan mejor, no solo para que se muevan.
-      Y 3D cuando el proyecto lo pide.</p>
-      <div class="shab">
-        <span class="mono"><b>UX/UI</b> Research · Flujos · UI · Design systems</span>
-        <span class="mono"><b>Motion UX/UI</b> Microinteracciones · Prototipos animados · Transiciones</span>
-        <span class="mono"><b>3D</b> Modelado · Render · Animación</span>
-        <span class="mono"><b>Herramientas</b> Figma · Illustrator · Photoshop · Claude · GitHub</span>
-      </div>
+      sistemas. Motion para que las pantallas se entiendan mejor, no solo para que se muevan.</p>
+    </div>
+    <div class="shab">
+      <span class="mono"><b>UX/UI</b> Research · Flujos · UI · Design systems</span>
+      <span class="mono"><b>Motion UX/UI</b> Microinteracciones · Prototipos animados · Transiciones</span>
+      <span class="mono"><b>3D</b> Modelado · Render · Animación</span>
+      <span class="mono"><b>Herramientas</b> Figma · Illustrator · Photoshop · Claude · GitHub</span>
     </div>
   </div>
-
-  <span class="pista mono" aria-hidden="true">Seguí bajando</span>
 </section>
 </div>
 </main>
@@ -1209,6 +1188,55 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   document.querySelectorAll('.up').forEach(el=>io.observe(el));
 }else{document.querySelectorAll('.up').forEach(el=>el.classList.add('in'))}
 </script>
+<script>
+/* --- titulos que se escriben solos al entrar en pantalla.
+   El texto sigue entero en el HTML: buscadores y lectores de pantalla lo leen igual (el titulo lleva aria-label). --- */
+(function(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var V=30;                                            // ms por letra
+  var titulos=[].slice.call(document.querySelectorAll('h1, .ctitulo, .pt'));
+  titulos.forEach(function(t){
+    t.setAttribute('aria-label',t.textContent.replace(/\s+/g,' ').trim());
+    var n=0;
+    (function partir(nodo){
+      [].slice.call(nodo.childNodes).forEach(function(c){
+        if(c.nodeType===3){
+          var frag=document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function(trozo){
+            if(!trozo)return;
+            if(/^\s+$/.test(trozo)){frag.appendChild(document.createTextNode(' '));return;}
+            var pal=document.createElement('span'); pal.setAttribute('aria-hidden','true');
+            for(var i=0;i<trozo.length;i++){
+              var l=document.createElement('span'); l.className='tw-c'; l.style.setProperty('--i',n++);
+              l.textContent=trozo[i]; pal.appendChild(l);
+            }
+            frag.appendChild(pal);
+          });
+          nodo.replaceChild(frag,c);
+        }else if(c.nodeType===1&&c.tagName!=='BR')partir(c);
+      });
+    })(t);
+    var letras=t.querySelectorAll('.tw-c');
+    if(letras.length)letras[letras.length-1].classList.add('tw-fin');
+    t.style.setProperty('--tw-v',V+'ms');
+    t.classList.add('tw');
+  });
+  if(!('IntersectionObserver' in window)){titulos.forEach(function(t){t.classList.add('tw-go');});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting)e.target.classList.add('tw-go');
+  });},{threshold:.3});
+  // el titulo del inicio espera a que la pagina termine de cargar: si no, se escribe mientras todavia no se ve
+  var h1=document.querySelector('h1.tw');
+  function arrancar(){setTimeout(function(){if(h1)h1.classList.add('tw-go');},380);}
+  if(document.readyState==='complete')arrancar(); else addEventListener('load',arrancar);
+  titulos.forEach(function(t){if(t!==h1)io.observe(t);});
+  // al abrir una pagina interna sus titulos se vuelven a escribir
+  addEventListener('hashchange',function(){
+    var activa=document.querySelector('#casos>.activo'); if(!activa)return;
+    [].forEach.call(activa.querySelectorAll('.tw'),function(t){t.classList.remove('tw-go');});
+  });
+})();
+</script>
 
 <script src="./vendor/three-r128.min.js"></script>
 <script>
@@ -1219,7 +1247,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     console.error('Three.js local no pudo inicializarse.');
     return;
   }
-  ['scene','tel','esfera','estante'].forEach(function(id){
+  ['scene','tel','estante'].forEach(function(id){
     var cv=document.getElementById(id);
     if(!cv)return;
     cv.addEventListener('webglcontextlost',function(ev){
@@ -1254,30 +1282,89 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   // el renderer codifica a sRGB al salir, asi que el color se escribe en lineal:
   // si no, #0A0A0B termina viendose rgb(56) y el objeto queda gris sobre el fondo
   function aLineal(hex){return new THREE.Color(hex).convertSRGBToLinear();}
-  var solido=new THREE.MeshBasicMaterial({color:aLineal(0x0A0A0B),toneMapped:false,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
+  // el solido de la espada va bien atras: el trazo grueso se apoya sobre las caras curvas y si no, queda tapado a medias
+  var solido=new THREE.MeshBasicMaterial({color:aLineal(0x0A0A0B),toneMapped:false,polygonOffset:true,polygonOffsetFactor:4,polygonOffsetUnits:8});
   var solidoRoca=new THREE.MeshBasicMaterial({color:aLineal(0x0A0A0B),toneMapped:false,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
   var NEON=0xFF9455;                    // arista encendida, mas clara que el naranja base
   var lineas=[];                        // para modular el brillo con el scroll
+
+  /* Trazo grueso: WebGL dibuja las lineas de 1 pixel fisico, que en un celular de 3x quedan finisimas.
+     Cada arista se vuelve un rectangulo que el shader ensancha en pantalla: mismo grosor en cualquier
+     densidad, con el borde suavizado. El nucleo es fino y nitido; el halo, ancho y difuso. */
+  var RES={value:new THREE.Vector2(1,1)}, PR=rend.getPixelRatio();
+  var TRAZO_VS='attribute vec3 fin; attribute float lado; uniform vec2 res; uniform float ancho; varying float vLado;'+
+    'void main(){ vec4 a=projectionMatrix*modelViewMatrix*vec4(position,1.); vec4 b=projectionMatrix*modelViewMatrix*vec4(fin,1.);'+
+    ' vec2 d=b.xy/b.w*res-a.xy/a.w*res; d=length(d)>1e-5?normalize(d):vec2(1.,0.); vec2 n=vec2(-d.y,d.x);'+
+    ' vec2 off=n*lado*ancho/res; gl_Position=vec4(a.xy+off*a.w,a.z,a.w); vLado=lado; }';
+  var TRAZO_FS='uniform vec3 color; uniform float opacidad; uniform float suave; varying float vLado;'+
+    'void main(){ float k=1.-smoothstep(1.-suave,1.,abs(vLado)); gl_FragColor=linearToOutputTexel(vec4(color,opacidad*k)); }';
+  // separa las aristas: las largas (hoja, mango, filo) van con trazo grueso; las cortas (el zigzag del
+  // anillo del pomo y de la guarda) con linea fina, porque engrosadas parecen una trenza
+  var LARGA=.14;
+  function separar(aristas){
+    var p=aristas.attributes.position, largas=[], cortas=[];
+    for(var s=0;s<p.count;s+=2){
+      var dx=p.getX(s+1)-p.getX(s),dy=p.getY(s+1)-p.getY(s),dz=p.getZ(s+1)-p.getZ(s);
+      var dest=Math.sqrt(dx*dx+dy*dy+dz*dz)>LARGA?largas:cortas;
+      dest.push(p.getX(s),p.getY(s),p.getZ(s),p.getX(s+1),p.getY(s+1),p.getZ(s+1));
+    }
+    function geo(a){var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(a,3)); return g;}
+    return {largas:geo(largas),cortas:geo(cortas)};
+  }
+  function trazoGeo(aristas){
+    var p=aristas.attributes.position, n=p.count/2, pos=new Float32Array(n*12), fin=new Float32Array(n*12),
+        lado=new Float32Array(n*4), idx=[];
+    for(var s=0;s<n;s++){
+      var ax=p.getX(2*s),ay=p.getY(2*s),az=p.getZ(2*s),bx=p.getX(2*s+1),by=p.getY(2*s+1),bz=p.getZ(2*s+1);
+      // dos vertices en cada punta; el que esta en la punta b mira hacia a, por eso su lado se invierte
+      var P=[[ax,ay,az,bx,by,bz,1],[ax,ay,az,bx,by,bz,-1],[bx,by,bz,ax,ay,az,1],[bx,by,bz,ax,ay,az,-1]];
+      for(var v=0;v<4;v++){var o=(s*4+v)*3; pos[o]=P[v][0];pos[o+1]=P[v][1];pos[o+2]=P[v][2];
+        fin[o]=P[v][3];fin[o+1]=P[v][4];fin[o+2]=P[v][5]; lado[s*4+v]=P[v][6];}
+      var i0=s*4; idx.push(i0,i0+1,i0+2, i0,i0+2,i0+3);
+    }
+    var g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('fin',new THREE.BufferAttribute(fin,3));
+    g.setAttribute('lado',new THREE.BufferAttribute(lado,1));
+    g.setIndex(idx);
+    return g;
+  }
+  function materialTrazo(hex,op,anchoCss,suave){
+    var u={res:RES,ancho:{value:anchoCss*PR},color:{value:new THREE.Color(hex)},opacidad:{value:op},suave:{value:suave}};
+    var m=new THREE.ShaderMaterial({uniforms:u,vertexShader:TRAZO_VS,fragmentShader:TRAZO_FS,
+      transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+    m.color=u.color.value;                                // el cambio de tema usa .color y .opacity
+    Object.defineProperty(m,'opacity',{get:function(){return u.opacidad.value;},set:function(v){u.opacidad.value=v;}});
+    return m;
+  }
+  function mallaTrazo(geo,mat){
+    var t=new THREE.Mesh(geo,mat);
+    t.raycast=function(){};                               // el clic del minijuego solo prueba el solido
+    return t;
+  }
 
   function malla(geo,mat,umbral,op,sinHalo){
     var g=new THREE.Group();
     g.add(new THREE.Mesh(geo,mat));
     var aristas=new THREE.EdgesGeometry(geo,umbral);
-    // nucleo brillante
-    var nucleo=new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:op,
-      blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
-    g.add(new THREE.LineSegments(aristas,nucleo));
-    // halo: la misma arista apenas escalada, tenue y aditiva -> da el resplandor
-    var halo=new THREE.LineBasicMaterial({color:NARANJA,transparent:true,opacity:op*.30,
-      blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
-    if(!sinHalo){
-      var h1=new THREE.LineSegments(aristas,halo); h1.scale.setScalar(1.006);
-      var h2=new THREE.LineSegments(aristas,halo); h2.scale.setScalar(0.994);
-      g.add(h1); g.add(h2);
-      halo.userData.halo=true;
-      lineas.push(halo);
+    if(sinHalo){
+      // roca y escombros: linea fina de siempre, es fondo
+      var fina=new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:op,
+        blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
+      g.add(new THREE.LineSegments(aristas,fina));
+      lineas.push(fina);
+      return g;
     }
-    lineas.push(nucleo);
+    // espada: en las aristas largas, halo ancho y difuso y encima el nucleo nitido; en el detalle, linea fina
+    var partes=separar(aristas);
+    var detalle=new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:op*.9,
+      blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
+    g.add(new THREE.LineSegments(partes.cortas,detalle));
+    var tg=trazoGeo(partes.largas);
+    var halo=materialTrazo(NARANJA,op*.4,6,1); halo.userData.halo=true;
+    var nucleo=materialTrazo(NEON,op,1.7,.55);
+    g.add(mallaTrazo(tg,halo)); g.add(mallaTrazo(tg,nucleo));
+    lineas.push(detalle,halo,nucleo);
     return g;
   }
 
@@ -1402,8 +1489,9 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   // umbral alto y opacidad baja: sólo los quiebres marcados, no toda la malla
   var piedra=malla(roca(4.6,4,.34),solidoRoca,1,.16,true); piedra.position.y=-3.2;
   var grupo=new THREE.Group(); grupo.add(piedra); grupo.add(espada);
+  var escombros=[];
   for(var d=0;d<11;d++){
-    var e=malla(roca(.10+Math.random()*.16,1,.85),solidoRoca,1,.26,true);
+    var e=malla(roca(.10+Math.random()*.16,1,.85),solidoRoca,1,.26,true); escombros.push(e);
     var ang=Math.random()*6.283,ra=.7+Math.random()*3.1;
     e.position.set(Math.cos(ang)*ra,-1.45-Math.random()*.55,Math.sin(ang)*ra*.55);
     e.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
@@ -1423,11 +1511,15 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   function fit(){
     var w=cv.clientWidth,hh=cv.clientHeight; if(!w||!hh)return;
     cam.aspect=w/hh;
-    angosto=cam.aspect<.85;          // en vertical la espada baja y se inclina
+    angosto=cam.aspect<.85;          // en vertical la espada va derecha, al centro, clavada en el nombre
     d0=ENC/Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
     // la roca se estira en X lo necesario para desbordar por los costados
     piedra.scale.x=Math.max(1,(ENC*cam.aspect*1.15)/3.6);
+    // en el celular los escombros quedaban flotando junto al texto y la malla de la roca cruzaba el nombre
+    for(var q=0;q<escombros.length;q++)escombros[q].visible=!angosto;
+    piedra.children[1].material.userData.base=angosto?.08:.16;
     cam.updateProjectionMatrix(); rend.setSize(w,hh,false);
+    rend.getDrawingBufferSize(RES.value);
   }
   fit(); addEventListener('resize',fit,{passive:true});
 
@@ -1445,11 +1537,11 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     sp+=(raw-sp)*.11;
     var e=sp<.5?4*sp*sp*sp:1-Math.pow(-2*sp+2,3)/2;
     if(!(window.__juego&&window.__juego.activo)){
-      var baja=angosto?1.95:.82, sube=angosto?3.4:2.3;
+      var baja=angosto?1.62:.82, sube=angosto?3.4:2.3;
       espada.position.y=-baja+e*sube;
-      espada.position.x=angosto?.55:0;   // en vertical se corre a la derecha, lejos del texto
+      espada.position.x=0;
       espada.rotation.y=e*.42;
-      espada.rotation.z=angosto?.34-e*.16:.05;   // inclinada, se endereza al salir
+      espada.rotation.z=angosto?.03:.05;
     }
     grupo.position.y=-e*.6;
     cam.position.set(0,CY,d0*(1+e*.6)); cam.lookAt(0,CY,0);   // retrocede mas al soltarse
@@ -1663,166 +1755,115 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
 </script>
 
 <script>
-/* --- esfera de imagenes que se abre en cubo con el scroll --- */
+/* --- formas de sobre mi: una chiquita al lado de cada titulo (01 esfera · 02 cubo · 03 piramide).
+   Un solo contexto WebGL dibuja las tres y cada titulo copia su cuadro a su propio canvas 2D.
+   Al entrar en pantalla, cada forma se arma desde la anterior (la primera, desde afuera). --- */
 (function(){
-  var cv=document.getElementById('esfera');
-  if(!cv||typeof THREE==='undefined')return;
-  var seccion=document.getElementById('sobre'),rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
-  rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
+  var vistas=[].slice.call(document.querySelectorAll('canvas.sforma'));
+  if(!vistas.length||typeof THREE==='undefined')return;
+  var lienzo=document.createElement('canvas'),rend;
+  try{rend=new THREE.WebGLRenderer({canvas:lienzo,alpha:true,antialias:true});}catch(e){return;}
   rend.outputEncoding=THREE.sRGBEncoding;
-  rend.setClearAlpha(0);
+  rend.setClearColor(0x000000,0);
 
-  var scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100);
-  var NARANJA=0xFF7A3D;
-
-  /* ---------------------------------------------------------------
-     CAPITULO 01 (esfera): trabajo.   CAPITULO 02 (cubo): personales.
-     Rutas o data URIs. Cuadradas, 400x400 alcanza.
-     Si quedan vacios se dibujan huecos numerados.
-  --------------------------------------------------------------- */
-  /* Placas de color: ya no hay fotos. Cada placa es un tono de naranja. */
-  var N=34;
-  var R=2.05, LADO=.74, CUBO=2.2;          // CUBO = media arista
-  var PW=2.6, PA=3.2, PB=1.6;              // piramide: media base, vertice, base
+  var scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(30,1,.1,100);
+  var N=34, R=2.05, LADO=.74, CUBO=2.2;     // CUBO = media arista
+  var PW=2.6, PA=3.2, PB=1.6;               // piramide: media base, vertice, base
   var TONOS=[0xFF5A14,0xF24E0C,0xFF6A26,0xE04408,0xFF7A3D,0xD63E06];
-  scene.add(new THREE.AmbientLight(0xffffff,.32));
-  var luz=new THREE.DirectionalLight(0xffffff,.62); luz.position.set(3,4,5); scene.add(luz);
-  var luz2=new THREE.DirectionalLight(0xFFB48A,.22); luz2.position.set(-4,-2,-3); scene.add(luz2);
+  // encuadre de cada forma: cuanto mide y donde queda su centro
+  var EXT=[2.75,3.45,3.35], CY=[0,0,.75];
+  scene.add(new THREE.AmbientLight(0xffffff,.36));
+  var luz=new THREE.DirectionalLight(0xffffff,.66); luz.position.set(3,4,5); scene.add(luz);
+  var luz2=new THREE.DirectionalLight(0xFFB48A,.24); luz2.position.set(-4,-2,-3); scene.add(luz2);
 
-  var grupo=new THREE.Group();
-  var geo=new THREE.BoxGeometry(LADO,LADO,.045);
+  var grupo=new THREE.Group(); scene.add(grupo);
+  var geo=new THREE.BoxGeometry(LADO,LADO,.05);
   var marco=new THREE.EdgesGeometry(geo);
   var AUREO=Math.PI*(1+Math.sqrt(5));
   var piezas=[],guia=new THREE.Object3D();
-
+  var caras=[
+    new THREE.Vector3(PA+PB,PW,0).normalize(), new THREE.Vector3(-(PA+PB),PW,0).normalize(),
+    new THREE.Vector3(0,PW,PA+PB).normalize(), new THREE.Vector3(0,PW,-(PA+PB)).normalize(),
+    new THREE.Vector3(0,-1,0)];
+  function orientar(p,n){guia.position.copy(p); guia.lookAt(p.clone().add(n)); return guia.quaternion.clone();}
   for(var i=0;i<N;i++){
     var phi=Math.acos(1-2*(i+.5)/N), th=AUREO*(i+.5);
     var dir=new THREE.Vector3(Math.cos(th)*Math.sin(phi),Math.cos(phi),Math.sin(th)*Math.sin(phi));
-
     var pE=dir.clone().multiplyScalar(R);
-    guia.position.copy(pE); guia.lookAt(pE.clone().multiplyScalar(2));
-    var qE=guia.quaternion.clone();
-
-    // mapeo a la cara dominante del cubo
-    var ax=Math.abs(dir.x),ay=Math.abs(dir.y),az=Math.abs(dir.z);
-    var mx=Math.max(ax,ay,az);
+    // cubo: la cara dominante
+    var ax=Math.abs(dir.x),ay=Math.abs(dir.y),az=Math.abs(dir.z),mx=Math.max(ax,ay,az);
     var pC=dir.clone().divideScalar(mx).multiplyScalar(CUBO);
-    var nor=new THREE.Vector3(
-      mx===ax?Math.sign(dir.x):0, mx===ay?Math.sign(dir.y):0, mx===az?Math.sign(dir.z):0);
-    guia.position.copy(pC); guia.lookAt(pC.clone().add(nor));
-    var qC=guia.quaternion.clone();
-
-    // piramide: 4 caras inclinadas + base. Se toma la cara que el rayo alcanza primero.
-    var caras=[
-      new THREE.Vector3(PA+PB,PW,0).normalize(),
-      new THREE.Vector3(-(PA+PB),PW,0).normalize(),
-      new THREE.Vector3(0,PW,PA+PB).normalize(),
-      new THREE.Vector3(0,PW,-(PA+PB)).normalize(),
-      new THREE.Vector3(0,-1,0)];
+    var nC=new THREE.Vector3(mx===ax?Math.sign(dir.x):0,mx===ay?Math.sign(dir.y):0,mx===az?Math.sign(dir.z):0);
+    // piramide: la cara que el rayo alcanza primero
     var mejor=-1e9,nP=null;
     for(var q=0;q<caras.length;q++){
-      var k=q<4?caras[q].y*PA:PB;              // distancia del plano al centro
-      var f=caras[q].dot(dir)/k;
+      var f=caras[q].dot(dir)/(q<4?caras[q].y*PA:PB);
       if(f>mejor){mejor=f;nP=caras[q];}
     }
     var pP=dir.clone().divideScalar(mejor);
-    guia.position.copy(pP); guia.lookAt(pP.clone().add(nP));
-    var qP=guia.quaternion.clone();
-
-    var mat=new THREE.MeshStandardMaterial({color:TONOS[(i*7)%TONOS.length],roughness:.42,metalness:.08});
-    var baldosa=new THREE.Mesh(geo,mat);
-    baldosa.add(new THREE.LineSegments(marco,
-      new THREE.LineBasicMaterial({color:0xFFC4A3,transparent:true,opacity:.35})));
-    baldosa.position.copy(pE); baldosa.quaternion.copy(qE);
-    grupo.add(baldosa);
-    piezas.push({m:baldosa,pE:pE,qE:qE,pC:pC,qC:qC,pP:pP,qP:qP});
+    var m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:TONOS[(i*7)%TONOS.length],roughness:.42,metalness:.08}));
+    m.add(new THREE.LineSegments(marco,new THREE.LineBasicMaterial({color:0xFFC4A3,transparent:true,opacity:.3})));
+    grupo.add(m);
+    piezas.push({m:m,p:[pE,pC,pP],q:[orientar(pE,dir),orientar(pC,nC),orientar(pP,nP)]});
   }
-  scene.add(grupo);
 
-  var offX=0,offY=.06,ENC=3.6,d0=8,ENCbase=3.6;
-  var ranura=document.querySelector('.sforma');
-  function fit(){
-    var w=cv.clientWidth,hh=cv.clientHeight; if(!w||!hh)return;
-    cam.aspect=w/hh;
-    var r=ranura&&ranura.getBoundingClientRect();
-    var ancho=!!(r&&r.width>60&&cam.aspect>=1.05);
-    if(ancho){
-      // en pantalla ancha la forma vive en su columna (.sforma), dentro del contenedor centrado:
-      // centro y tamaño salen del layout, no de los bordes del viewport
-      var c=cv.getBoundingClientRect();
-      offX=((r.left+r.width/2)-(c.left+c.width/2))/(c.width/2);   // fraccion del medio ancho visible
-      var diam=Math.min(r.width*.95,hh*.6);                       // diametro de la esfera en px
-      ENCbase=2.2*hh/diam;                                         // la esfera mide ~4.4 unidades
-    }else{
-      ENCbase=Math.min(4.6,Math.max(ENC,3.1/cam.aspect));
-      offX=0;
-    }
-    cam.updateProjectionMatrix(); rend.setSize(w,hh,false);
-  }
-  fit(); addEventListener('resize',fit,{passive:true});
-
-  // arrastre
-  var girX=0,girY=0,velX=0,velY=.0016,arrastrando=false,ax0=0,ay0=0;
-  cv.addEventListener('pointerdown',function(e){arrastrando=true;ax0=e.clientX;ay0=e.clientY;cv.setPointerCapture(e.pointerId);});
-  cv.addEventListener('pointermove',function(e){
-    if(!arrastrando)return;
-    velY=(e.clientX-ax0)*.00042; velX=(e.clientY-ay0)*.00034;
-    girY+=velY*12; girX+=velX*12; ax0=e.clientX; ay0=e.clientY;
+  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var estados=vistas.map(function(cv,i){
+    var f=Math.min(i,2);
+    return {cv:cv,ctx:cv.getContext('2d'),forma:f,desde:f-1,t0:0,visible:false,giro:.6+i*1.7};
   });
-  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
-    cv.addEventListener(ev,function(){arrastrando=false;});
-  });
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      var s=estados[vistas.indexOf(e.target)];
+      s.visible=e.isIntersecting;
+      if(e.isIntersecting&&!s.t0)s.t0=performance.now()+150;   // arranca apenas se ve
+    });},{threshold:.5});
+    vistas.forEach(function(v){io.observe(v);});
+  }else estados.forEach(function(s){s.visible=true;s.t0=1;});
 
-  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches,visible=false;
-  if('IntersectionObserver' in window)
-    new IntersectionObserver(function(e){visible=e[0].isIntersecting;},{rootMargin:'15% 0px'}).observe(seccion);
-  else visible=true;
-
-  var t=0,tSuave=0,vP=new THREE.Vector3();
-  function progreso(){
-    var r=seccion.getBoundingClientRect();
-    var total=seccion.offsetHeight-innerHeight;
-    if(total<=0)return 0;
-    return Math.min(1,Math.max(0,(-r.top)/total));   // 0 esfera · .5 cubo · 1 piramide
+  // todos los canvas miden lo mismo: el lienzo WebGL se ajusta a ese tamaño en pixeles reales
+  var tam=0;
+  function medir(){
+    var w=0; vistas.forEach(function(v){w=Math.max(w,v.clientWidth);});
+    var px=Math.round(w*Math.min(devicePixelRatio||1,2));
+    if(px&&px!==tam){tam=px; rend.setSize(px,px,false); vistas.forEach(function(v){v.width=px;v.height=px;});}
   }
+  addEventListener('resize',medir,{passive:true});
+
   function suave(x){return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
+  var v=new THREE.Vector3();
+  function colocar(s,e){
+    var desdeAfuera=s.desde<0, ap=desdeAfuera?(1-e)*1.8:Math.sin(Math.PI*e)*.2;
+    for(var k=0;k<piezas.length;k++){
+      var z=piezas[k], b=z.p[s.forma];
+      if(desdeAfuera){v.copy(b); z.m.quaternion.copy(z.q[s.forma]);}
+      else{v.copy(z.p[s.desde]).lerp(b,e); z.m.quaternion.copy(z.q[s.desde]).slerp(z.q[s.forma],e);}
+      z.m.position.copy(v.multiplyScalar(1+ap));
+    }
+    // la camara acompaña el tamaño de la forma del momento
+    var a=desdeAfuera?s.forma:s.desde, ext=EXT[a]+(EXT[s.forma]-EXT[a])*e, cy=CY[a]+(CY[s.forma]-CY[a])*e;
+    var d=ext/Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
+    cam.position.set(0,cy+d*.12,d); cam.lookAt(0,cy,0);
+  }
 
   var avisado=false;
-  (function loop(){
+  (function loop(now){
     requestAnimationFrame(loop);
-    if(!visible)return;
     try{
-    t=quieto?0:progreso();
-    tSuave+=(t-tSuave)*.09;
-
-    // dos tramos: esfera->cubo (0..0.5) y cubo->piramide (0.5..1)
-    var tramo=tSuave<.5?0:1;
-    var e=suave(Math.min(1,Math.max(0,(tSuave-tramo*.5)/.5)));
-    var apertura=Math.sin(Math.PI*e)*.16;
-
-    for(var k=0;k<piezas.length;k++){
-      var z=piezas[k];
-      var pa=tramo?z.pC:z.pE, pb=tramo?z.pP:z.pC;
-      var qa=tramo?z.qC:z.qE, qb=tramo?z.qP:z.qC;
-      vP.copy(pa).lerp(pb,e);
-      vP.multiplyScalar(1+apertura);        // se separan en el medio de cada tramo
-      z.m.position.copy(vP);
-      z.m.quaternion.copy(qa).slerp(qb,e);
-    }
-
-    if(!arrastrando){velY+=(.0016-velY)*.02;velX*=.94;girY+=velY;girX+=velX;}
-    girX=Math.max(-.75,Math.min(.75,girX));
-    grupo.rotation.y=girY; grupo.rotation.x=girX;
-    // la camara retrocede segun lo grande que sea la forma del momento
-    var k=offX?.45:1;   // en pantalla ancha el cubo y la piramide no se achican tanto
-    var zoom=1+.72*k*suave(Math.min(1,tSuave*2))+.18*k*suave(Math.max(0,tSuave*2-1));
-    d0=ENCbase*zoom/Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
-    // la piramide se corre mas a la derecha que el cubo
-    var lado=offX*ENCbase*zoom*cam.aspect;
-    cam.position.set(-lado,offY,d0); cam.lookAt(-lado,offY,0);
-    rend.render(scene,cam);
-    }catch(e){ if(!avisado){avisado=true;console.warn('escena 3D:',e.message);} }
+      if(!tam)medir();
+      if(!tam)return;                       // la pagina todavia no esta a la vista
+      for(var i=0;i<estados.length;i++){
+        var s=estados[i];
+        if(!s.visible)continue;
+        var e=quieto?1:(!s.t0||now<s.t0?0:Math.min(1,(now-s.t0)/1500));
+        colocar(s,suave(e));
+        if(!quieto)s.giro+=.006;
+        grupo.rotation.set(0,s.giro,0);
+        rend.render(scene,cam);
+        s.ctx.clearRect(0,0,tam,tam);
+        s.ctx.drawImage(lienzo,0,0);
+      }
+    }catch(err){ if(!avisado){avisado=true;console.warn('formas 3D:',err.message);} }
   })(0);
 })();
 </script>
