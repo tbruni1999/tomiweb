@@ -362,9 +362,6 @@ body.jugando .estela{display:block}
 #casos>.trofeos.activo{display:flex}   /* gana al display:block generico */
 body.viendo-caso .inicio{display:none}
 body.viendo-caso #casos{display:block}
-.caso{padding-top:0;
-  padding-bottom:clamp(70px,11vh,140px);padding-left:var(--gut);padding-right:var(--gut)}
-.caso.activo{display:block}
 .caso-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;
   padding:31px var(--pad) 34px;border-bottom:1px solid var(--line);
   margin-bottom:clamp(30px,5vh,60px)}
@@ -467,109 +464,39 @@ body.viendo-caso #casos{display:block}
 }
 @media(max-width:620px){.card{width:100%;min-height:240px;aspect-ratio:4/3}}
 
-/* --- caso de estudio --- */
-.caso{position:relative;z-index:2;padding-left:var(--pad);padding-right:var(--pad);
-  margin-bottom:clamp(70px,11vh,140px)}
-.caso-cab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
-  gap:clamp(24px,5vw,80px);align-items:start;padding-bottom:clamp(24px,4vh,44px);
-  border-top:1px solid var(--line);padding-top:18px}
-.caso-t{font-family:var(--disp);font-weight:900;font-size:clamp(32px,5vw,72px);
-  line-height:.92;letter-spacing:-.028em;text-transform:uppercase}
-.caso-dat{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:14px}
-.caso-dat span{font-family:var(--mono);font-size:11px;letter-spacing:var(--tr-caps);
-  text-transform:uppercase;color:var(--ash)}
-.caso-dat b{color:var(--bone);font-weight:400}
-.caso-desc{font-family:var(--mono);font-size:12px;line-height:1.72;letter-spacing:var(--tr-text);
-  color:var(--ash);max-width:52ch}
-.caso-desc em{color:var(--bone);font-style:normal}
-/* --- pantallas: marcos de navegador y de celular para mostrar sitios ---
-   Sin captura se ve un esqueleto de pagina. Con captura (un <img> de pagina completa dentro de
-   .pantalla) la imagen arranca arriba y, al pasar el mouse, recorre la pagina hasta el final. */
-.marco{position:relative;background:var(--surf);border:1px solid var(--line);overflow:hidden;
-  transition:border-color .45s,transform .7s cubic-bezier(.2,.8,.2,1)}
-.marco-barra{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-bottom:1px solid var(--line)}
-.marco-barra i{flex:0 0 auto;width:8px;height:8px;border-radius:50%;border:1px solid var(--dim)}
-.marco-url{flex:0 1 46%;margin:0 auto;padding:3px 12px;border:1px solid var(--line);
-  font-family:var(--mono);font-size:10px;letter-spacing:var(--tr-text);color:var(--dim);
-  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pantalla{position:relative;aspect-ratio:16/10;overflow:hidden}
-.pantalla img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block;
-  background:var(--surf);transition:object-position 7s cubic-bezier(.45,0,.55,1)}
-.proj:hover .pantalla img,.marco:hover .pantalla img{object-position:50% 100%}
-.cel{padding:5px}
-.cel .pantalla{aspect-ratio:9/19.5;border:1px solid var(--line)}
-/* esqueleto: el lugar de la captura, dibujado con las mismas lineas del sitio */
-.esq{position:absolute;inset:0;display:flex;flex-direction:column;gap:6%;padding:4% 6% 6%}
-.esq>span{display:block;border:1px solid var(--line)}
-.esq .esq-nav{flex:0 0 7%;border-width:0 0 1px}
-.esq-hero{flex:0 0 30%}
-.esq-txt{flex:0 0 3%;width:58%}
-.esq-txt+.esq-txt{width:40%}
-.esq .esq-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:4%;border:0}
-.esq-grid i{border:1px solid var(--line)}
-.cel .esq{gap:4%;padding:12% 9% 9%}
-.cel .esq-hero{flex-basis:28%}
-.cel .esq-grid{grid-template-columns:1fr}
-.esq-spec{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:10px;
-  letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim);background:var(--surf);padding:2px 4px 2px 0}
-
-.tira{display:grid;gap:clamp(12px,1.6vw,24px);grid-template-columns:repeat(6,minmax(0,1fr));align-items:start}
-.tira>figure{margin:0}
-.tira>.w6{grid-column:span 6}
-.tira>.w3{grid-column:span 3}
-.tira>.w2{grid-column:span 2}
-.tira>.w2 .cel{width:min(100%,280px);margin:0 auto}
-.tira figcaption{margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:var(--tr-caps);
-  text-transform:uppercase;color:var(--dim)}
-.tira>.w2 figcaption{text-align:center}
-.caso:hover .marco{border-color:rgba(255,122,61,.35)}
-.ph{position:relative;min-height:130px;background:var(--surf);border:1px solid var(--line);overflow:hidden;
-  aspect-ratio:4/3;transition:border-color .45s}
-.ph::before{content:attr(data-id);position:absolute;top:10px;left:11px;font-family:var(--mono);
-  font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim);z-index:1}
-.ph::after{content:attr(data-med);position:absolute;bottom:10px;right:11px;font-family:var(--mono);
-  font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim)}
-.caso:hover .ph{border-color:rgba(255,122,61,.35)}
-.ph img,.ph video{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:860px){
-  .caso-cab{grid-template-columns:1fr}
-  .tira{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tira>.w6,.tira>.w3{grid-column:span 2}
-  .tira>.w2{grid-column:span 1}
-  /* el tercer celular queda solo en su fila: va centrado y del mismo ancho que los otros */
-  .tira>.w2+.w2+.w2{grid-column:1 / -1}
-  .tira>.w2+.w2+.w2 .cel{width:calc(50% - 6px)}
-}
 .obra{position:relative;padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);padding-bottom:clamp(80px,13vh,150px)}
 .obra .grid{padding:0 var(--gut)}
 .ohead{position:relative;z-index:2;padding-left:var(--pad);padding-right:var(--pad);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:baseline;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:clamp(28px,5vh,54px)}
 .ohead b,.ohead h2{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--bone)}
 .ohead span{font-family:var(--mono);font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--ash)}
-/* cada proyecto: ficha corta de un lado, el sitio en navegador y celular del otro, en zigzag */
-.proj{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);
-  gap:clamp(24px,5vw,80px);align-items:center;padding-left:var(--pad);padding-right:var(--pad);
-  margin-bottom:clamp(64px,11vh,130px)}
+/* cada proyecto: una portada grande y el link al sitio en vivo */
+.proj{position:relative;z-index:2;display:block;padding-left:var(--pad);padding-right:var(--pad);
+  margin-bottom:clamp(72px,13vh,160px)}
 .proj:last-child{margin-bottom:0}
-.proj:nth-of-type(even){grid-template-columns:minmax(0,8fr) minmax(0,4fr)}
-.proj:nth-of-type(even) .pinfo{order:2}
-.pinfo{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
-.pn{font-family:var(--mono);font-size:11px;letter-spacing:var(--tr-num);color:var(--dim);transition:color .35s}
-.pt{font-family:var(--disp);font-weight:900;font-size:clamp(24px,3.2vw,46px);line-height:.95;letter-spacing:-.028em;text-transform:uppercase}
-.ptags{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
-.ptags li{font-family:var(--mono);font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;
-  color:var(--ash);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
-.verproy{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding-bottom:6px;color:var(--ash);
-  border-bottom:1px solid var(--line);transition:color .35s,border-color .35s}
-.verproy i{font-style:normal;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.proj:hover .verproy{color:var(--rim);border-color:var(--rim)}
-.proj:hover .verproy i{transform:translateX(4px)}
-.pvista{position:relative;padding:0 7% 9% 0}          /* lugar para el celular que asoma */
-.pvista .cel{position:absolute;right:0;bottom:0;width:21%;box-shadow:0 0 0 6px var(--void)}
-.proj:nth-of-type(even) .pvista{padding:0 0 9% 7%}
-.proj:nth-of-type(even) .pvista .cel{right:auto;left:0}
-.proj:hover .marco{border-color:var(--rim)}
-.proj:hover .pvista>.marco:first-child{transform:translateY(-4px)}
+.pcab{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:clamp(14px,2.6vw,34px);align-items:end;
+  padding-bottom:clamp(14px,2.4vh,22px)}
+.pn{align-self:start;font-family:var(--mono);font-size:11px;letter-spacing:var(--tr-num);color:var(--dim);transition:color .35s}
+.pt{font-family:var(--disp);font-weight:900;font-size:clamp(40px,7vw,112px);line-height:.8;letter-spacing:-.03em;text-transform:uppercase}
+.pdat{font-family:var(--mono);font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;
+  color:var(--ash);text-align:right;line-height:1.9}
+.ptapa{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:var(--surf);
+  border:1px solid var(--line);transition:border-color .45s}
+.ptapa img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.proj:hover .ptapa img{transform:scale(1.04)}
+.proj:hover .ptapa{border-color:var(--rim)}
 .proj:hover .pn{color:var(--rim)}
+/* el boton al sitio: siempre visible, se enciende con el hover */
+.pir{position:absolute;right:clamp(12px,2vw,24px);bottom:clamp(12px,2vw,24px);z-index:2;
+  display:inline-flex;align-items:center;gap:10px;padding:12px 16px;
+  background:var(--void);border:1px solid var(--line);color:var(--bone);transition:border-color .35s}
+.pir i{font-style:normal;color:var(--rim);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.proj:hover .pir{border-color:var(--rim)}
+.proj:hover .pir i{transform:translate(2px,-2px)}
+/* sin portada todavia: el hueco dice que va */
+.pvacia{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-family:var(--mono);
+  font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim);line-height:2.1}
+.pvacia b{display:block;color:var(--ash);font-weight:400}
 .contacto{position:relative;min-height:100svh;display:flex;flex-direction:column;
   padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);
   padding-bottom:clamp(28px,5vh,56px);overflow:hidden}
@@ -593,10 +520,8 @@ body.viendo-caso #casos{display:block}
 .up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
 .up.in{opacity:1;transform:none}
 @media(max-width:860px){
-  .proj,.proj:nth-of-type(even){grid-template-columns:minmax(0,1fr);gap:22px}
-  .proj:nth-of-type(even) .pinfo{order:0}
-  .proj:nth-of-type(even) .pvista{padding:0 7% 9% 0}
-  .proj:nth-of-type(even) .pvista .cel{left:auto;right:0}
+  .pcab{grid-template-columns:auto minmax(0,1fr)}
+  .pdat{grid-column:2;text-align:left}
 }
 @media(prefers-reduced-motion:reduce){.up{opacity:1;transform:none}}
 
@@ -631,17 +556,9 @@ body.viendo-caso #casos{display:block}
 
   /* obra: mas separacion entre proyectos */
   .proj{margin-bottom:clamp(52px,8vh,90px)}
-  .pt{font-size:clamp(24px,7vw,32px)}
-  .marco-barra{height:24px;padding:0 9px;gap:5px}
-  .marco-barra i{width:6px;height:6px}
-  .marco-url{font-size:9px;padding:2px 8px}
+  .pt{font-size:clamp(36px,11vw,48px)}
+  .pir{padding:10px 13px}
 
-  /* caso: la grilla deja de ser miniaturas */
-  .tira{gap:10px}
-  .ph{min-height:150px}
-  .caso-cab{gap:24px;padding-bottom:28px}
-  .caso-dat{gap:8px 18px}
-  .caso{margin-bottom:clamp(56px,9vh,110px)}
 
   /* contacto: el telefono baja a su propia banda, con el texto arriba */
   #tel{top:auto;bottom:0;height:46%}
@@ -657,8 +574,7 @@ body.viendo-caso #casos{display:block}
   .shab span{padding-top:12px}
 }
 @media(max-width:400px){
-  .pt{font-size:23px}
-  .caso-t{font-size:28px}
+  .pt{font-size:34px}
   h1{font-size:29px}
 }
 
@@ -676,8 +592,6 @@ body.viendo-caso #casos{display:block}
   .mid{padding-top:clamp(14px,2.4vh,26px)}
   .meta{padding-bottom:10px}
   .caso-nav{padding:18px var(--pad) 20px}
-  .caso-cab{gap:20px;padding-bottom:24px}
-  .caso-dat{gap:4px 16px}
   .shab span{padding-top:8px}
   .cpie{flex-direction:column;gap:6px}
   .obra{padding-top:clamp(40px,7vh,80px)}
@@ -898,55 +812,21 @@ body.viendo-caso #casos{display:block}
 <section class="inicio obra" id="obra">
   <div class="grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   <header class="ohead up"><h2>Trabajos seleccionados</h2><span>Tres proyectos · 2024—2026</span></header>
-  <!-- Para cada proyecto: poné la captura de pagina completa como <img src="assets/pX-desktop.webp" alt="" loading="lazy">
-       dentro de la .pantalla del navegador (1440 px de ancho) y la de celular (390 px) dentro de la .pantalla del .cel.
-       Al pasar el mouse la captura se recorre de arriba a abajo. -->
+  <!-- Cada proyecto: portada 16:10 (2400 x 1500 px, WebP) y link al sitio en vivo.
+       Con link, el proyecto es un <a class="proj" href="..." target="_blank" rel="noopener"> y lleva el boton .pir -->
 
-  <a class="proj up" href="#p1">
-    <div class="pinfo">
-      <span class="pn">/01</span>
-      <h3 class="pt">Proyecto uno</h3>
-      <ul class="ptags"><li>UX/UI</li><li>Sitio web</li><li>2026</li></ul>
-      <span class="verproy mono">Ver proyecto <i>&#8594;</i></span>
-    </div>
-    <div class="pvista" aria-hidden="true">
-      <div class="marco">
-        <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-uno</span></div>
-        <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Captura completa · 1440 px · WebP</span></div>
-      </div>
-      <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-    </div>
-  </a>
-  <a class="proj up" href="#p2">
-    <div class="pinfo">
-      <span class="pn">/02</span>
-      <h3 class="pt">Sedant</h3>
-      <ul class="ptags"><li>UX/UI</li><li>E-commerce</li><li>2026</li></ul>
-      <span class="verproy mono">Ver proyecto <i>&#8594;</i></span>
-    </div>
-    <div class="pvista" aria-hidden="true">
-      <div class="marco">
-        <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">sedant</span></div>
-        <div class="pantalla"><img src="assets/sedant/home-desktop.webp" alt="" width="2000" height="1250" loading="lazy" decoding="async"></div>
-      </div>
-      <div class="marco cel"><div class="pantalla"><img src="assets/sedant/movil-inicio.webp" alt="" width="924" height="2000" loading="lazy" decoding="async"></div></div>
-    </div>
-  </a>
-  <a class="proj up" href="#p3">
-    <div class="pinfo">
-      <span class="pn">/03</span>
-      <h3 class="pt">Proyecto tres</h3>
-      <ul class="ptags"><li>UX/UI</li><li>3D</li><li>2024</li></ul>
-      <span class="verproy mono">Ver proyecto <i>&#8594;</i></span>
-    </div>
-    <div class="pvista" aria-hidden="true">
-      <div class="marco">
-        <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-tres</span></div>
-        <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Captura completa · 1440 px · WebP</span></div>
-      </div>
-      <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-    </div>
-  </a>
+  <div class="proj up">
+    <div class="pcab"><span class="pn">/01</span><h3 class="pt">Proyecto uno</h3><span class="pdat">UX/UI · Sitio web<br>2026</span></div>
+    <div class="ptapa"><span class="pvacia">Portada /01<b>2400 × 1500 px · WebP</b></span></div>
+  </div>
+  <div class="proj up">
+    <div class="pcab"><span class="pn">/02</span><h3 class="pt">Sedant</h3><span class="pdat">UX/UI · E-commerce<br>2026</span></div>
+    <div class="ptapa"><img src="assets/sedant/portada.webp" alt="Sedant: el perfume Humo sobre humo negro" width="2000" height="1250" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="proj up">
+    <div class="pcab"><span class="pn">/03</span><h3 class="pt">Proyecto tres</h3><span class="pdat">UX/UI · 3D<br>2024</span></div>
+    <div class="ptapa"><span class="pvacia">Portada /03<b>2400 × 1500 px · WebP</b></span></div>
+  </div>
 </section>
 
 
@@ -1088,155 +968,6 @@ body.viendo-caso #casos{display:block}
 
   <span class="pista mono" aria-hidden="true">Seguí bajando</span>
 </section>
-  <article class="caso" id="p1">
-    <div class="caso-nav">
-      <a class="volver mono" href="#obra"><i>&#8592;</i> Volver a trabajos</a>
-      <span class="mono">Tomás Bruni®</span>
-    </div>
-    <div class="caso-cab">
-      <div>
-        <h3 class="caso-t">Proyecto uno</h3>
-        <div class="caso-dat">
-          <span>Año <b>2026</b></span><span>Rol <b>UX/UI · Producto digital</b></span>
-          <span>Duración <b>6 semanas</b></span>
-        </div>
-      </div>
-      <p class="caso-desc"><em>Dos o tres líneas sobre el problema y qué hiciste.</em>
-      Contá de dónde salió el encargo, qué decisión visual tomaste y por qué. Sin adjetivos
-      de más: qué había antes, qué hiciste, qué cambió después.</p>
-    </div>
-    <div class="tira">
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-uno</span></div>
-          <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Home · captura completa · 1440 px</span></div>
-        </div>
-        <figcaption>Home · desktop</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · inicio</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · navegación</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · detalle</figcaption>
-      </figure>
-      <figure class="w3"><div class="ph" data-id="Sistema de diseño" data-med="1200×900"></div><figcaption>Componentes y estilos</figcaption></figure>
-      <figure class="w3"><div class="ph" data-id="Interacción" data-med="Video · 1200×900"></div><figcaption>Motion y microinteracciones</figcaption></figure>
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-uno/interna</span></div>
-          <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Página interna · 1440 px</span></div>
-        </div>
-        <figcaption>Página interna · desktop</figcaption>
-      </figure>
-    </div>
-  </article>
-  <article class="caso" id="p2">
-    <div class="caso-nav">
-      <a class="volver mono" href="#obra"><i>&#8592;</i> Volver a trabajos</a>
-      <span class="mono">Tomás Bruni®</span>
-    </div>
-    <div class="caso-cab">
-      <div>
-        <h3 class="caso-t">Sedant</h3>
-        <div class="caso-dat">
-          <span>Año <b>2026</b></span><span>Rol <b>UX/UI · Diseño web</b></span>
-          <span>Tipo <b>Marca ficticia</b></span>
-        </div>
-      </div>
-      <p class="caso-desc"><em>Una maison de perfumes inventada de punta a punta: marca, sistema y sitio.</em>
-      Cuatro fragancias, cada una con su propia atmósfera de color. Una ficha de producto con
-      pirámide olfativa y una compra que se cierra por WhatsApp, sin checkout de por medio.</p>
-    </div>
-    <div class="tira">
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">sedant</span></div>
-          <div class="pantalla"><img src="assets/sedant/home-desktop.webp" alt="Home de Sedant en desktop: el perfume Humo sobre humo negro" width="2000" height="1250" loading="lazy" decoding="async"></div>
-        </div>
-        <figcaption>Home · desktop</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><img src="assets/sedant/movil-inicio.webp" alt="Home de Sedant en el celular, con Ámbar" width="924" height="2000" loading="lazy" decoding="async"></div></div>
-        <figcaption>Mobile · inicio</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><img src="assets/sedant/movil-menu.webp" alt="Menú de Sedant en el celular" width="924" height="2000" loading="lazy" decoding="async"></div></div>
-        <figcaption>Mobile · menú</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><img src="assets/sedant/movil-producto.webp" alt="Ficha de Humo en el celular" width="924" height="2000" loading="lazy" decoding="async"></div></div>
-        <figcaption>Mobile · producto</figcaption>
-      </figure>
-      <figure class="w3"><div class="ph" data-id="Sistema de diseño" data-med="1200×900"></div><figcaption>Marca, color por fragancia y componentes</figcaption></figure>
-      <figure class="w3">
-        <div class="ph ph-video"><video muted loop playsinline preload="metadata" aria-label="Interacción del sitio de Sedant: carrusel de fragancias y ficha de producto">
-          <source src="assets/sedant/interaccion.webm" type="video/webm"><source src="assets/sedant/interaccion.mp4" type="video/mp4">
-        </video></div>
-        <figcaption>Interacción · carrusel y ficha</figcaption>
-      </figure>
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">sedant/ambar</span></div>
-          <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Ficha de producto · 1440 px</span></div>
-        </div>
-        <figcaption>Ficha de producto · desktop</figcaption>
-      </figure>
-    </div>
-  </article>
-  <article class="caso" id="p3">
-    <div class="caso-nav">
-      <a class="volver mono" href="#obra"><i>&#8592;</i> Volver a trabajos</a>
-      <span class="mono">Tomás Bruni®</span>
-    </div>
-    <div class="caso-cab">
-      <div>
-        <h3 class="caso-t">Proyecto tres</h3>
-        <div class="caso-dat">
-          <span>Año <b>2024</b></span><span>Rol <b>UX/UI · 3D</b></span>
-          <span>Duración <b>6 semanas</b></span>
-        </div>
-      </div>
-      <p class="caso-desc"><em>Dos o tres líneas sobre el problema y qué hiciste.</em>
-      Contá de dónde salió el encargo, qué decisión visual tomaste y por qué. Sin adjetivos
-      de más: qué había antes, qué hiciste, qué cambió después.</p>
-    </div>
-    <div class="tira">
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-tres</span></div>
-          <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Home · captura completa · 1440 px</span></div>
-        </div>
-        <figcaption>Home · desktop</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · inicio</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · navegación</figcaption>
-      </figure>
-      <figure class="w2">
-        <div class="marco cel"><div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div></div></div>
-        <figcaption>Mobile · detalle</figcaption>
-      </figure>
-      <figure class="w3"><div class="ph" data-id="Sistema de diseño" data-med="1200×900"></div><figcaption>Componentes y estilos</figcaption></figure>
-      <figure class="w3"><div class="ph" data-id="Interacción" data-med="Video · 1200×900"></div><figcaption>Motion y microinteracciones</figcaption></figure>
-      <figure class="w6">
-        <div class="marco">
-          <div class="marco-barra"><i></i><i></i><i></i><span class="marco-url">proyecto-tres/interna</span></div>
-          <div class="pantalla"><div class="esq" aria-hidden="true"><span class="esq-nav"></span><span class="esq-hero"></span><span class="esq-txt"></span><span class="esq-txt"></span><span class="esq-grid"><i></i><i></i><i></i></span></div><span class="esq-spec">Página interna · 1440 px</span></div>
-        </div>
-        <figcaption>Página interna · desktop</figcaption>
-      </figure>
-    </div>
-  </article>
 </div>
 </main>
 
@@ -3081,7 +2812,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
 (function(){
   /* parallax de todas las fotos: usa la propiedad `translate`, no pisa otros transforms */
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  var SEL='.hs-foto img, .card-foto, .ph img';
+  var SEL='.hs-foto img, .card-foto';
   var lista=[];
   function juntar(){
     lista=[].slice.call(document.querySelectorAll(SEL)).map(function(el){
@@ -3103,19 +2834,6 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   addEventListener('scroll',mover,{passive:true});
   addEventListener('resize',mover);
   addEventListener('hashchange',function(){setTimeout(function(){juntar();mover();},120);});
-})();
-</script>
-<script>
-/* videos de los casos: se reproducen solo mientras estan en pantalla; con movimiento reducido, controles */
-(function(){
-  var vs=document.querySelectorAll('.tira video'); if(!vs.length)return;
-  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if(quieto||!('IntersectionObserver' in window)){[].forEach.call(vs,function(v){v.controls=true;});return;}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){
-    if(e.isIntersecting){var p=e.target.play(); if(p&&p.catch)p.catch(function(){});}
-    else e.target.pause();
-  });},{threshold:.35});
-  [].forEach.call(vs,function(v){io.observe(v);});
 })();
 </script>
 </body>
