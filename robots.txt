@@ -1,0 +1,5 @@
+# Todo el sitio es público: buscadores y asistentes de IA pueden leerlo.
+User-agent: *
+Allow: /
+
+Sitemap: https://tomiweb.tomasbruni1999.workers.dev/sitemap.xml

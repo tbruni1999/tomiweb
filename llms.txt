@@ -1,0 +1,29 @@
+# Tomás Bruni
+
+> Diseñador UX/UI y web en Montevideo, Uruguay. Diseña sitios web e interfaces de punta a punta (investigación, flujos, UI y design systems), con motion para que las pantallas se entiendan mejor, y 3D cuando suma. Trabaja desde 2016, solo o armando equipo según el proyecto, y toma pocos proyectos por año.
+
+- Sitio: https://tomiweb.tomasbruni1999.workers.dev/
+- Instagram: https://www.instagram.com/tomibrunirgs/ (@tomibrunirgs)
+- Email: hola@tomasbruni.com
+- Base: Montevideo, Uruguay (GMT-3)
+- Idioma: castellano
+
+## Qué hace
+
+- Diseño UX/UI: research, flujos, UI y design systems.
+- Diseño web: sitios publicados de punta a punta.
+- Motion UX/UI: microinteracciones, prototipos animados y transiciones.
+- 3D: modelado, render y animación, cuando el proyecto lo necesita.
+- Herramientas: Figma, Illustrator, Photoshop, Claude y GitHub.
+
+## Trabajos seleccionados
+
+- [Orbitronic](https://orbitronic-web.tomasbruni1999.workers.dev/) (2026): marca y web 3D de una gaseosa inventada de la era atómica de los años 50. Un recorrido con scroll que va del cartel de ruta a una cocina de los 50, al espacio y de vuelta.
+- [Sedant](https://sedant-web.tomasbruni1999.workers.dev/) (2026): marca, sistema de diseño y sitio de e-commerce de una maison de perfumes ficticia. Cuatro fragancias con su propia atmósfera de color, ficha de producto con pirámide olfativa y compra por WhatsApp.
+- [Daiana Guerra](https://daiana-guerra-web.pages.dev/) (2026): sitio web.
+
+## Preguntas frecuentes
+
+- ¿Quién es Tomás Bruni? Un diseñador UX/UI y web de Montevideo, Uruguay.
+- ¿Qué tipo de proyectos toma? Sitios web, productos digitales e interfaces, con motion y, si suma, 3D.
+- ¿Cómo se lo contacta? Por email a hola@tomasbruni.com o por Instagram (@tomibrunirgs). Responde en menos de 48 horas.

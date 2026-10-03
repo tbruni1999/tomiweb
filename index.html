@@ -6,25 +6,45 @@
 <title>Tomás Bruni® — Diseñador UX/UI y web en Montevideo</title>
 <meta name="description" content="Tomás Bruni, diseñador UX/UI en Montevideo, Uruguay. Diseño sitios web e interfaces de punta a punta, con motion que las hace más claras. Contame tu proyecto.">
 <meta name="author" content="Tomás Bruni">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://tomiweb.tomasbruni1999.workers.dev/">
 <meta name="theme-color" content="#0A0A0B">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
+<link rel="me" href="https://www.instagram.com/tomibrunirgs/">
+<link rel="preload" href="vendor/three-r128.min.js" as="script">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://tomiweb.tomasbruni1999.workers.dev/">
 <meta property="og:locale" content="es_UY">
 <meta property="og:site_name" content="Tomás Bruni®">
 <meta property="og:title" content="Tomás Bruni® — Diseñador UX/UI y web en Montevideo">
 <meta property="og:description" content="Diseño sitios web e interfaces de punta a punta, con motion que las hace más claras.">
-<meta property="og:image" content="assets/og.jpg">
+<meta property="og:image" content="https://tomiweb.tomasbruni1999.workers.dev/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Tomás Bruni — portfolio de diseño UX/UI y web">
+<meta property="profile:first_name" content="Tomás">
+<meta property="profile:last_name" content="Bruni">
+<meta property="profile:username" content="tomibrunirgs">
 <meta name="twitter:card" content="summary_large_image">
+<!-- Datos estructurados: quien es, que hace y sus proyectos. Los leen buscadores y asistentes de IA. -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Tomás Bruni",
- "jobTitle":"Diseñador UX/UI",
- "knowsAbout":["Diseño UX/UI","Diseño web","Motion para interfaces","Design systems","3D"],
- "address":{"@type":"PostalAddress","addressLocality":"Montevideo","addressCountry":"UY"},
- "email":"mailto:hola@tomasbruni.com"}
+{"@context":"https://schema.org","@graph":[
+ {"@type":"WebSite","@id":"https://tomiweb.tomasbruni1999.workers.dev/#sitio","url":"https://tomiweb.tomasbruni1999.workers.dev/","name":"Tomás Bruni®","inLanguage":"es","publisher":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas"}},
+ {"@type":"ProfilePage","@id":"https://tomiweb.tomasbruni1999.workers.dev/#perfil","url":"https://tomiweb.tomasbruni1999.workers.dev/","name":"Tomás Bruni® — Diseñador UX/UI y web en Montevideo","inLanguage":"es","isPartOf":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#sitio"},"mainEntity":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas"}},
+ {"@type":"Person","@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas","name":"Tomás Bruni","alternateName":"tomibrunirgs","url":"https://tomiweb.tomasbruni1999.workers.dev/",
+  "image":"https://tomiweb.tomasbruni1999.workers.dev/assets/retrato.webp","jobTitle":"Diseñador UX/UI y web",
+  "description":"Diseñador UX/UI y web en Montevideo, Uruguay. Diseña sitios web e interfaces de punta a punta, con motion para que las pantallas se entiendan mejor, y 3D cuando suma.",
+  "email":"mailto:hola@tomasbruni.com","sameAs":["https://www.instagram.com/tomibrunirgs/"],
+  "address":{"@type":"PostalAddress","addressLocality":"Montevideo","addressCountry":"UY"},
+  "knowsLanguage":"es",
+  "knowsAbout":["Diseño UX/UI","Diseño web","Motion para interfaces","Design systems","Prototipos animados","3D","Figma","Illustrator","Photoshop"]},
+ {"@type":"ItemList","@id":"https://tomiweb.tomasbruni1999.workers.dev/#trabajos","name":"Trabajos seleccionados","itemListElement":[
+  {"@type":"ListItem","position":1,"item":{"@type":"CreativeWork","name":"Orbitronic","url":"https://orbitronic-web.tomasbruni1999.workers.dev/","dateCreated":"2026","creator":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas"},"description":"Marca y web 3D de una gaseosa inventada de la era atómica de los años 50: un recorrido con scroll del cartel de ruta a una cocina y al espacio."}},
+  {"@type":"ListItem","position":2,"item":{"@type":"CreativeWork","name":"Sedant","url":"https://sedant-web.tomasbruni1999.workers.dev/","dateCreated":"2026","creator":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas"},"description":"Marca, sistema de diseño y sitio de e-commerce de una maison de perfumes ficticia: cuatro fragancias, ficha de producto y compra por WhatsApp."}},
+  {"@type":"ListItem","position":3,"item":{"@type":"CreativeWork","name":"Daiana Guerra","url":"https://daiana-guerra-web.pages.dev/","dateCreated":"2026","creator":{"@id":"https://tomiweb.tomasbruni1999.workers.dev/#tomas"},"description":"Sitio web."}}
+ ]}
+]}
 </script>
 <style>
 @font-face{font-family:'Space Mono';font-style:normal;font-weight:400;font-display:swap;
@@ -67,6 +87,8 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--void);transition:background-color .5s ease;color:var(--bone);font-family:var(--disp);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html{overflow-x:hidden}
+@supports (overflow-x:clip){html{overflow-x:clip}}
 body{min-height:100svh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:1.5px solid var(--rim);outline-offset:4px}
@@ -826,8 +848,7 @@ body.viendo-caso #casos{display:block}
     <h2 class="ctitulo up">Contame<br><u>tu proyecto.</u></h2>
     <div class="clinks up">
       <a href="mailto:hola@tomasbruni.com"><span class="num n">/01</span><span class="d">hola@tomasbruni.com</span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener"><span class="num n">/02</span><span class="d">Instagram</span></a>
-      <a href="https://www.linkedin.com/" target="_blank" rel="noopener"><span class="num n">/03</span><span class="d">LinkedIn</span></a>
+      <a href="https://www.instagram.com/tomibrunirgs/" target="_blank" rel="noopener me"><span class="num n">/02</span><span class="d">Instagram · @tomibrunirgs</span></a>
     </div>
     <p class="note up">Respondo en menos de 48 horas. Contame el proyecto, los plazos y el presupuesto que manejás.</p>
   </div>
@@ -1119,6 +1140,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches && matchMedia('(hover:
     });
   }
 
+  var cuadro=0;
   function paso(now){
     requestAnimationFrame(paso);
     if(imantada){
@@ -1145,7 +1167,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches && matchMedia('(hover:
       }
     }
     bola.style.transform='translate3d('+(x-R)+'px,'+(y-R)+'px,0)';
-    marcar(); limpiar(now);
+    if((cuadro=(cuadro+1)%3)===0){marcar(); limpiar(now);}   // elementFromPoint fuerza layout: no hace falta en cada cuadro
   }
   requestAnimationFrame(paso);
 })();
@@ -1160,6 +1182,7 @@ function loop(){
   const dx=tx-cx, dy=ty-cy;
   if(Math.abs(dx)<.0004&&Math.abs(dy)<.0004)return;   // quieto: no toca el DOM
   cx+=dx*.1; cy+=dy*.1;
+  window.__lx=cx; window.__ly=cy;
   try{
     r.style.setProperty('--lx',cx.toFixed(3));
     r.style.setProperty('--ly',cy.toFixed(3));
@@ -1173,12 +1196,18 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     },{passive:true});
     requestAnimationFrame(loop);
   }else{
-    const t0=performance.now();
+    // en pantallas tactiles la inclinacion es un vaiven lento. Va solo sobre el inicio (no sobre toda la pagina),
+    // mientras se ve y a medio ritmo: cambiar estas variables obliga a recalcular el estilo de lo que las usa
+    const t0=performance.now(), hero=document.getElementById('inicio');
+    let heroVisible=true, impar=false;
+    if('IntersectionObserver' in window)new IntersectionObserver(es=>{heroVisible=es[0].isIntersecting;}).observe(hero);
     (function drift(now){
-      const s=(now-t0)/1000;
-      r.style.setProperty('--lx',(Math.sin(s*.5)*.8).toFixed(3));
-      r.style.setProperty('--ly',(Math.cos(s*.34)*.55).toFixed(3));
       requestAnimationFrame(drift);
+      if(!heroVisible||(impar=!impar))return;
+      const s=(now-t0)/1000, lx=Math.sin(s*.5)*.8, ly=Math.cos(s*.34)*.55;
+      window.__lx=lx; window.__ly=ly;
+      hero.style.setProperty('--lx',lx.toFixed(3));
+      hero.style.setProperty('--ly',ly.toFixed(3));
     })(t0);
   }
 }
@@ -1527,7 +1556,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   if('IntersectionObserver' in window)
     new IntersectionObserver(function(ev){visible=ev[0].isIntersecting;}).observe(wrap);
 
-  var css=getComputedStyle(document.documentElement),sp=0;
+  var sp=0;
   var avisado=false;
   (function loop(t){
     requestAnimationFrame(loop);
@@ -1545,8 +1574,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     }
     grupo.position.y=-e*.6;
     cam.position.set(0,CY,d0*(1+e*.6)); cam.lookAt(0,CY,0);   // retrocede mas al soltarse
-    var lx=parseFloat(css.getPropertyValue('--lx'))||0;
-    var ly=parseFloat(css.getPropertyValue('--ly'))||0;
+    var lx=window.__lx||0, ly=window.__ly||0;
     key.position.set(-4.5-lx*5,4.2-ly*3.5,4.5);
     rim.position.set(4.8-lx*5,-1.4-ly*3,-3.4);
     for(var li=0;li<lineas.length;li++){
@@ -1680,7 +1708,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     }
     cableGeo.setFromPoints(pts);
   }
-  rehacerCable(0);
+  rehacerCable(0); var cableAlto=0;
 
   tel.position.y=-1.45;
   var pivote=new THREE.Group(); pivote.add(tel); scene.add(pivote);
@@ -1738,13 +1766,12 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
       tubo.position.z=alza*.26;             // se adelanta al despegar
       tubo.rotation.x=-alza*.07;
     }
-    rehacerCable(h2);
+    if(Math.abs(h2-cableAlto)>.0005){cableAlto=h2; rehacerCable(h2);}   // si el tubo no se mueve, el cable tampoco
 
     pivote.position.x=offX;
     pivote.position.y=-3.4*(1-e);          // sube desde abajo
     pivote.rotation.x=(1-e)*.5;
-    var lx=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lx'))||0;
-    var ly=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ly'))||0;
+    var lx=window.__lx||0, ly=window.__ly||0;
     pivote.rotation.y=quieto?-.5:(-.5+lx*.32+Math.sin(t/5200)*.13);
     pivote.rotation.z=quieto?0:ly*.05;
     cam.position.set(0,offY,d0); cam.lookAt(0,offY,0);
@@ -2820,7 +2847,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     requestAnimationFrame(loop);
     if(!visible)return;
     try{
-    var lx=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lx'))||0;
+    var lx=window.__lx||0;
     mueble.rotation.y=-.32+lx*.14;
     mueble.updateMatrixWorld();
     // con un trofeo elegido la estanteria se apaga y queda de fondo
