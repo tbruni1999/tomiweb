@@ -1,6 +1,6 @@
 # Tomás Bruni
 
-> Diseñador UX/UI y web en Montevideo, Uruguay. Diseña sitios web e interfaces de punta a punta (investigación, flujos, UI y design systems), con motion para que las pantallas se entiendan mejor, y 3D cuando suma. Trabaja desde 2016, solo o armando equipo según el proyecto, y toma pocos proyectos por año.
+> Diseñador UX/UI y web en Montevideo, Uruguay. Diseña sitios web e interfaces de punta a punta (investigación, flujos, UI y design systems), con motion para que las pantallas se entiendan mejor, y 3D cuando suma. Trabaja desde 2016, solo o armando equipo según el proyecto.
 
 - Sitio: https://tomiweb.tomasbruni1999.workers.dev/
 - Instagram: https://www.instagram.com/tomibrunirgs/ (@tomibrunirgs)

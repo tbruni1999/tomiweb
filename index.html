@@ -420,6 +420,7 @@ body.viendo-caso #casos{display:block}
 .titem.abierto .tdet{grid-template-rows:1fr}
 .totorga{color:var(--bone);margin:0 0 8px;text-transform:none;letter-spacing:var(--tr-text)}
 .tnota{padding-bottom:14px}
+.tleyenda{display:none}
 @media(max-width:860px){
   .tbloque{display:flex;flex-direction:column;justify-content:center;max-width:none}
   .ttexto{max-width:none}
@@ -624,6 +625,16 @@ body.viendo-caso #casos{display:block}
   /* la banda del canvas nunca es mas alta que el hueco reservado abajo: no pisa la lista */
   #estante{top:auto;bottom:0;height:min(56%,62svh)}
   .trofeos::after{content:"";display:block;flex:1;min-height:62svh}
+  /* la lista no se despliega: la ficha del elegido va abajo del 3D, como la placa de una vitrina.
+     Asi tocar un trofeo no cambia el alto de nada y la pagina no se mueve. */
+  .tdet{display:none}
+  .tleyenda{display:block;position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(22px,4svh,40px);z-index:2;
+    text-align:center;pointer-events:none;opacity:0;transform:translateY(8px);
+    transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .tleyenda.ver{opacity:1;transform:none}
+  .tleyenda b{display:block;font-weight:700;font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--rim)}
+  .tleyenda span{display:block;max-width:40ch;margin:7px auto 0;font-size:10.5px;text-transform:none;letter-spacing:var(--tr-text);color:var(--bone);opacity:.72}
+  .tleyenda p{max-width:36ch;margin:8px auto 0;font-size:11.5px;line-height:1.6;text-transform:none;letter-spacing:var(--tr-text);color:var(--ash)}
 }
 /* --- sobre mi corto en el home --- */
 .hsobre{position:relative;padding:clamp(56px,9vh,110px) var(--gut) clamp(40px,7vh,90px)}
@@ -741,7 +752,7 @@ body.viendo-caso #casos{display:block}
     <div class="top">
       <div class="thesis">
         <div class="rise d3"><h1>Hago que las ideas <u>ocupen espacio.</u></h1></div>
-        <p class="note rise d4">Diseño UX/UI, motion para interfaces y, cuando suma, 3D. Tomo pocos proyectos por año para poder entrar hasta el fondo en cada uno.</p>
+        <p class="note rise d4">Diseño UX/UI, motion para interfaces y, cuando suma, 3D.</p>
       </div>
       <nav class="idx rise d2" aria-label="Secciones">
         <a href="#obra"><span class="num n">/01</span><span class="d">Trabajos seleccionados</span></a>
@@ -910,6 +921,7 @@ body.viendo-caso #casos{display:block}
     </div>
     <div class="tforma" aria-hidden="true"></div>
   </div>
+  <div class="tleyenda mono" aria-live="polite"><b></b><span></span><p></p></div>
 </section>
 
 <section class="sobre" id="sobre">
@@ -1276,6 +1288,81 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     console.error('Three.js local no pudo inicializarse.');
     return;
   }
+/* Trazo grueso, compartido por la espada y el telefono.
+   WebGL dibuja las lineas de 1 pixel fisico: en un celular de 3x o en una pantalla retina quedan finisimas y
+   lavadas. Cada arista se vuelve un rectangulo que el shader ensancha en pantalla: mismo grosor en cualquier
+   densidad, con el borde suavizado. Las aristas cortas (curvas hechas de muchos tramos) siguen con linea fina,
+   porque engrosadas parecen una trenza. */
+window.__trazos=function(rend){
+  var RES={value:new THREE.Vector2(1,1)}, PR=rend.getPixelRatio(), hechos=[];
+  var VS='attribute vec3 fin; attribute float lado; uniform vec2 res; uniform float ancho; varying float vLado;'+
+    'void main(){ vec4 a=projectionMatrix*modelViewMatrix*vec4(position,1.); vec4 b=projectionMatrix*modelViewMatrix*vec4(fin,1.);'+
+    ' vec2 d=b.xy/b.w*res-a.xy/a.w*res; d=length(d)>1e-5?normalize(d):vec2(1.,0.); vec2 n=vec2(-d.y,d.x);'+
+    ' vec2 off=n*lado*ancho/res; gl_Position=vec4(a.xy+off*a.w,a.z,a.w); vLado=lado; }';
+  var FS='uniform vec3 color; uniform float opacidad; uniform float suave; varying float vLado;'+
+    'void main(){ float k=1.-smoothstep(1.-suave,1.,abs(vLado)); gl_FragColor=linearToOutputTexel(vec4(color,opacidad*k)); }';
+  // largas: trazo grueso; cortas: linea fina. Con eps, ademas, los biseles del modelo (dos aristas largas
+  // casi paralelas y pegadas, que juntas se leen como una linea borrosa) dejan una sola gruesa:
+  // la que queda tapada por otra mas larga pasa a fina, asi nada desaparece si la gruesa queda oculta.
+  function separar(aristas,larga,eps){
+    var p=aristas.attributes.position, largas=[], cortas=[], w=new THREE.Vector3();
+    for(var s=0;s<p.count;s+=2){
+      var a=new THREE.Vector3().fromBufferAttribute(p,s), b=new THREE.Vector3().fromBufferAttribute(p,s+1), l=a.distanceTo(b);
+      if(l>larga)largas.push({a:a,b:b,l:l,u:b.clone().sub(a).divideScalar(l||1)});
+      else cortas.push(a.x,a.y,a.z,b.x,b.y,b.z);
+    }
+    function cerca(r,q){
+      w.subVectors(q,r.a); var k=w.dot(r.u);
+      if(k<-eps||k>r.l+eps)return false;
+      w.addScaledVector(r.u,-k); return w.lengthSq()<eps*eps;
+    }
+    largas.sort(function(x,y){return y.l-x.l;});
+    var gruesas=[];
+    for(var i=0;i<largas.length;i++){
+      var r=largas[i], dest=gruesas;
+      if(eps)for(var j=0;j<i;j++){
+        var t=largas[j];
+        if(!t.fina&&Math.abs(r.u.dot(t.u))>.985&&cerca(t,r.a)&&cerca(t,r.b)){r.fina=true; dest=cortas; break;}
+      }
+      dest.push(r.a.x,r.a.y,r.a.z,r.b.x,r.b.y,r.b.z);
+    }
+    function g(a){var x=new THREE.BufferGeometry(); x.setAttribute('position',new THREE.Float32BufferAttribute(a,3)); return x;}
+    return {largas:g(gruesas),cortas:g(cortas)};
+  }
+  function geo(aristas){
+    var p=aristas.attributes.position, n=p.count/2, pos=new Float32Array(n*12), fin=new Float32Array(n*12),
+        lado=new Float32Array(n*4), idx=[];
+    for(var s=0;s<n;s++){
+      var ax=p.getX(2*s),ay=p.getY(2*s),az=p.getZ(2*s),bx=p.getX(2*s+1),by=p.getY(2*s+1),bz=p.getZ(2*s+1);
+      // dos vertices en cada punta; el que esta en la punta b mira hacia a, por eso su lado se invierte
+      var P=[[ax,ay,az,bx,by,bz,1],[ax,ay,az,bx,by,bz,-1],[bx,by,bz,ax,ay,az,1],[bx,by,bz,ax,ay,az,-1]];
+      for(var v=0;v<4;v++){var o=(s*4+v)*3; pos[o]=P[v][0];pos[o+1]=P[v][1];pos[o+2]=P[v][2];
+        fin[o]=P[v][3];fin[o+1]=P[v][4];fin[o+2]=P[v][5]; lado[s*4+v]=P[v][6];}
+      var i0=s*4; idx.push(i0,i0+1,i0+2, i0,i0+2,i0+3);
+    }
+    var g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('fin',new THREE.BufferAttribute(fin,3));
+    g.setAttribute('lado',new THREE.BufferAttribute(lado,1));
+    g.setIndex(idx);
+    return g;
+  }
+  function material(hex,op,anchoCss,suave){
+    var u={res:RES,ancho:{value:anchoCss*PR},color:{value:new THREE.Color(hex)},opacidad:{value:op},suave:{value:suave}};
+    hechos.push({u:u,base:anchoCss});
+    var m=new THREE.ShaderMaterial({uniforms:u,vertexShader:VS,fragmentShader:FS,
+      transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+    m.color=u.color.value;                                // el cambio de tema usa .color y .opacity
+    Object.defineProperty(m,'opacity',{get:function(){return u.opacidad.value;},set:function(v){u.opacidad.value=v;}});
+    return m;
+  }
+  function malla(g,m){var t=new THREE.Mesh(g,m); t.raycast=function(){}; return t;}   // los clics solo prueban el solido
+  return {separar:separar,geo:geo,material:material,malla:malla,
+    ajustar:function(){rend.getDrawingBufferSize(RES.value);},
+    // el grosor acompaña el tamaño del dibujo: chico en celular, sin empastar
+    escala:function(k){for(var i=0;i<hechos.length;i++)hechos[i].u.ancho.value=hechos[i].base*k*PR;}};
+};
+
   ['scene','tel','estante'].forEach(function(id){
     var cv=document.getElementById(id);
     if(!cv)return;
@@ -1317,60 +1404,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   var NEON=0xFF9455;                    // arista encendida, mas clara que el naranja base
   var lineas=[];                        // para modular el brillo con el scroll
 
-  /* Trazo grueso: WebGL dibuja las lineas de 1 pixel fisico, que en un celular de 3x quedan finisimas.
-     Cada arista se vuelve un rectangulo que el shader ensancha en pantalla: mismo grosor en cualquier
-     densidad, con el borde suavizado. El nucleo es fino y nitido; el halo, ancho y difuso. */
-  var RES={value:new THREE.Vector2(1,1)}, PR=rend.getPixelRatio();
-  var TRAZO_VS='attribute vec3 fin; attribute float lado; uniform vec2 res; uniform float ancho; varying float vLado;'+
-    'void main(){ vec4 a=projectionMatrix*modelViewMatrix*vec4(position,1.); vec4 b=projectionMatrix*modelViewMatrix*vec4(fin,1.);'+
-    ' vec2 d=b.xy/b.w*res-a.xy/a.w*res; d=length(d)>1e-5?normalize(d):vec2(1.,0.); vec2 n=vec2(-d.y,d.x);'+
-    ' vec2 off=n*lado*ancho/res; gl_Position=vec4(a.xy+off*a.w,a.z,a.w); vLado=lado; }';
-  var TRAZO_FS='uniform vec3 color; uniform float opacidad; uniform float suave; varying float vLado;'+
-    'void main(){ float k=1.-smoothstep(1.-suave,1.,abs(vLado)); gl_FragColor=linearToOutputTexel(vec4(color,opacidad*k)); }';
-  // separa las aristas: las largas (hoja, mango, filo) van con trazo grueso; las cortas (el zigzag del
-  // anillo del pomo y de la guarda) con linea fina, porque engrosadas parecen una trenza
-  var LARGA=.14;
-  function separar(aristas){
-    var p=aristas.attributes.position, largas=[], cortas=[];
-    for(var s=0;s<p.count;s+=2){
-      var dx=p.getX(s+1)-p.getX(s),dy=p.getY(s+1)-p.getY(s),dz=p.getZ(s+1)-p.getZ(s);
-      var dest=Math.sqrt(dx*dx+dy*dy+dz*dz)>LARGA?largas:cortas;
-      dest.push(p.getX(s),p.getY(s),p.getZ(s),p.getX(s+1),p.getY(s+1),p.getZ(s+1));
-    }
-    function geo(a){var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(a,3)); return g;}
-    return {largas:geo(largas),cortas:geo(cortas)};
-  }
-  function trazoGeo(aristas){
-    var p=aristas.attributes.position, n=p.count/2, pos=new Float32Array(n*12), fin=new Float32Array(n*12),
-        lado=new Float32Array(n*4), idx=[];
-    for(var s=0;s<n;s++){
-      var ax=p.getX(2*s),ay=p.getY(2*s),az=p.getZ(2*s),bx=p.getX(2*s+1),by=p.getY(2*s+1),bz=p.getZ(2*s+1);
-      // dos vertices en cada punta; el que esta en la punta b mira hacia a, por eso su lado se invierte
-      var P=[[ax,ay,az,bx,by,bz,1],[ax,ay,az,bx,by,bz,-1],[bx,by,bz,ax,ay,az,1],[bx,by,bz,ax,ay,az,-1]];
-      for(var v=0;v<4;v++){var o=(s*4+v)*3; pos[o]=P[v][0];pos[o+1]=P[v][1];pos[o+2]=P[v][2];
-        fin[o]=P[v][3];fin[o+1]=P[v][4];fin[o+2]=P[v][5]; lado[s*4+v]=P[v][6];}
-      var i0=s*4; idx.push(i0,i0+1,i0+2, i0,i0+2,i0+3);
-    }
-    var g=new THREE.BufferGeometry();
-    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
-    g.setAttribute('fin',new THREE.BufferAttribute(fin,3));
-    g.setAttribute('lado',new THREE.BufferAttribute(lado,1));
-    g.setIndex(idx);
-    return g;
-  }
-  function materialTrazo(hex,op,anchoCss,suave){
-    var u={res:RES,ancho:{value:anchoCss*PR},color:{value:new THREE.Color(hex)},opacidad:{value:op},suave:{value:suave}};
-    var m=new THREE.ShaderMaterial({uniforms:u,vertexShader:TRAZO_VS,fragmentShader:TRAZO_FS,
-      transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
-    m.color=u.color.value;                                // el cambio de tema usa .color y .opacity
-    Object.defineProperty(m,'opacity',{get:function(){return u.opacidad.value;},set:function(v){u.opacidad.value=v;}});
-    return m;
-  }
-  function mallaTrazo(geo,mat){
-    var t=new THREE.Mesh(geo,mat);
-    t.raycast=function(){};                               // el clic del minijuego solo prueba el solido
-    return t;
-  }
+  var T=window.__trazos(rend), LARGA=.14;
 
   function malla(geo,mat,umbral,op,sinHalo){
     var g=new THREE.Group();
@@ -1385,14 +1419,14 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
       return g;
     }
     // espada: en las aristas largas, halo ancho y difuso y encima el nucleo nitido; en el detalle, linea fina
-    var partes=separar(aristas);
+    var partes=T.separar(aristas,LARGA);
     var detalle=new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:op*.9,
       blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
     g.add(new THREE.LineSegments(partes.cortas,detalle));
-    var tg=trazoGeo(partes.largas);
-    var halo=materialTrazo(NARANJA,op*.4,6,1); halo.userData.halo=true;
-    var nucleo=materialTrazo(NEON,op,1.7,.55);
-    g.add(mallaTrazo(tg,halo)); g.add(mallaTrazo(tg,nucleo));
+    var tg=T.geo(partes.largas);
+    var halo=T.material(NARANJA,op*.4,6,1); halo.userData.halo=true;
+    var nucleo=T.material(NEON,op,1.7,.55);
+    g.add(T.malla(tg,halo)); g.add(T.malla(tg,nucleo));
     lineas.push(detalle,halo,nucleo);
     return g;
   }
@@ -1548,7 +1582,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     for(var q=0;q<escombros.length;q++)escombros[q].visible=!angosto;
     piedra.children[1].material.userData.base=angosto?.08:.16;
     cam.updateProjectionMatrix(); rend.setSize(w,hh,false);
-    rend.getDrawingBufferSize(RES.value);
+    T.ajustar();
   }
   fit(); addEventListener('resize',fit,{passive:true});
 
@@ -1597,7 +1631,8 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   if(!cv||typeof THREE==='undefined')return;
   var wrap=cv.parentNode,rend;
   try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
-  rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
+  // a resolucion completa (tope 2) tambien en celular: es una escena chica y a 1.5 se veia borrosa
+  rend.setPixelRatio(Math.min(devicePixelRatio,2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.toneMapping=THREE.ACESFilmicToneMapping;
   rend.toneMappingExposure=1.05;
@@ -1607,8 +1642,8 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   var NARANJA=0xFF7A3D, NEON=0xFF9455;
   // sólido negro plano: no responde a las luces, solo tapa
   function aLineal(hex){return new THREE.Color(hex).convertSRGBToLinear();}
-  var solido=new THREE.MeshBasicMaterial({color:aLineal(0x0A0A0B),toneMapped:false,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
-  var lineasTel=[];
+  var solido=new THREE.MeshBasicMaterial({color:aLineal(0x0A0A0B),toneMapped:false,polygonOffset:true,polygonOffsetFactor:4,polygonOffsetUnits:8});
+  var lineasTel=[], T=window.__trazos(rend);
   (window.__temaTres=window.__temaTres||[]).push(function(claro){
     solido.color.copy(aLineal(claro?0x171410:0x0A0A0B));
     for(var i=0;i<lineasTel.length;i++){
@@ -1619,19 +1654,19 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     }
   });
 
+  // aristas largas con trazo grueso y halo (como la espada); el detalle del disco, con linea fina
   function malla(geo,umbral,op){
     var g=new THREE.Group();
     g.add(new THREE.Mesh(geo,solido));
-    var aristas=new THREE.EdgesGeometry(geo,umbral);
-    g.add(new THREE.LineSegments(aristas,new THREE.LineBasicMaterial({color:NEON,
-      transparent:true,opacity:op,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false})));
-    var halo=new THREE.LineBasicMaterial({color:NARANJA,transparent:true,opacity:op*.30,
+    var partes=T.separar(new THREE.EdgesGeometry(geo,umbral),.16,.055);
+    var fina=new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:op*.9,
       blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
-    var h1=new THREE.LineSegments(aristas,halo); h1.scale.setScalar(1.006);
-    var h2=new THREE.LineSegments(aristas,halo); h2.scale.setScalar(0.994);
-    g.add(h1); g.add(h2);
-    halo.userData.halo=true;
-    lineasTel.push(g.children[1].material,halo);
+    g.add(new THREE.LineSegments(partes.cortas,fina));
+    var tg=T.geo(partes.largas);
+    var halo=T.material(NARANJA,op*.35,6,1); halo.userData.halo=true;
+    var nucleo=T.material(NEON,op,1.6,.55);
+    g.add(T.malla(tg,halo)); g.add(T.malla(tg,nucleo));
+    lineasTel.push(fina,halo,nucleo);
     return g;
   }
   function pieza(geo,x,y,z,umbral,op){
@@ -1731,7 +1766,8 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     d0=ENCef/Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
     offY=movil?.42:.25;
     offX=(movil||cam.aspect<1.05)?0:Math.min(ENCef*cam.aspect*.42,2.6);
-    cam.updateProjectionMatrix(); rend.setSize(w,hh,false);
+    cam.updateProjectionMatrix(); rend.setSize(w,hh,false); T.ajustar();
+    T.escala(Math.max(.62,Math.min(1,w/760)));
   }
   fit(); addEventListener('resize',fit,{passive:true});
 
@@ -2772,18 +2808,20 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     giro.scale.setScalar(Math.min(.5/tam.y,.6/Math.max(tam.x,tam.z)));
     giro.position.y=ALTO_PED; giro.rotation.y=i*1.3;
     var trofeo=new THREE.Group(); trofeo.add(pedestal(tP)); trofeo.add(giro);
+    var med=new THREE.Box3().setFromObject(trofeo).getSize(new THREE.Vector3());   // a escala 1, para encuadrarlo al frente
     trofeo.position.set(i%2?.12:-.12,pisos[3-i],.02);   // /01 arriba de todo
-    trofeo.userData={inicio:trofeo.position.clone(),giro:giro,trazos:[tM,tP],brillo:0,li:li};
+    trofeo.userData={inicio:trofeo.position.clone(),giro:giro,trazos:[tM,tP],brillo:0,li:li,
+      alto:med.y,ancho:Math.max(med.x,med.z)};
     mueble.add(trofeo); piezas.push(trofeo);
   });
 
   // --- encuadre: la estanteria entra entera en su columna (.tforma), debajo de la barra
-  var ranura=document.querySelector('.tforma'), camX=0, camY=0, d0=8;
+  var ranura=document.querySelector('.tforma'), camX=0, camY=0, d0=8, movil=false;
   function fit(){
     var w=cv.clientWidth,hh=cv.clientHeight; if(!w||!hh)return;
     cam.aspect=w/hh;
     var c=cv.getBoundingClientRect(), r=ranura&&ranura.getBoundingClientRect();
-    var ancho=!!(r&&r.width>60);
+    var ancho=!!(r&&r.width>60); movil=!ancho;
     var cx=ancho?r.left+r.width/2-c.left:w/2;
     var arriba=ancho?100:20, abajo=ancho?44:16;
     var zonaH=Math.max(120,hh-arriba-abajo), zonaW=ancho?r.width:w*.86;
@@ -2797,7 +2835,8 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   fit(); addEventListener('resize',fit,{passive:true});
 
   // --- seleccion: la lista y el 3D son la misma cosa
-  var elegido=null, foco=null;
+  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var elegido=null, foco=null, placa=seccion.querySelector('.tleyenda');
   function elegir(g){
     elegido=g;
     piezas.forEach(function(p){
@@ -2805,6 +2844,26 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
       li.classList.toggle('abierto',on);
       li.querySelector('.tbtn').setAttribute('aria-expanded',on?'true':'false');
     });
+    inscribir(g);
+  }
+  // celular: la ficha del elegido se lee abajo del 3D (en la lista no se despliega)
+  function inscribir(g){
+    if(!placa)return;
+    placa.classList.remove('ver');
+    if(!g)return;
+    var li=g.userData.li;
+    placa.querySelector('b').textContent=li.querySelector('.num').textContent+' · '+li.querySelector('.tnom').textContent;
+    placa.querySelector('span').textContent=li.querySelector('.totorga').textContent;
+    placa.querySelector('p').textContent=li.querySelector('.tnota').textContent;
+    void placa.offsetWidth;                  // reinicia la entrada si se pasa de un trofeo a otro
+    placa.classList.add('ver');
+  }
+  // si se elige desde la lista y la vitrina quedo fuera de la pantalla, se acerca sola, sin saltos
+  function mostrarVitrina(){
+    if(!movil)return;
+    var r=cv.getBoundingClientRect(), vis=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(vis>r.height*.8)return;
+    scrollBy({top:r.bottom-innerHeight+8,behavior:quieto?'auto':'smooth'});
   }
   function enfocar(g){
     foco=g;
@@ -2812,7 +2871,10 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
   }
   piezas.forEach(function(p){
     var li=p.userData.li;
-    li.querySelector('.tbtn').addEventListener('click',function(){elegir(elegido===p?null:p);});
+    li.querySelector('.tbtn').addEventListener('click',function(){
+      elegir(elegido===p?null:p);
+      if(elegido)mostrarVitrina();
+    });
     li.addEventListener('mouseenter',function(){enfocar(p);});
     li.addEventListener('mouseleave',function(){enfocar(null);});
   });
@@ -2827,7 +2889,8 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     var hit=rc.intersectObjects(mallas,false);
     return hit.length?hit[0].object.userData.raiz:null;
   }
-  cv.addEventListener('pointerdown',function(e){
+  // click y no pointerdown: en celular el dedo apoya en el 3D para scrollear y eso no tiene que elegir nada
+  cv.addEventListener('click',function(e){
     var g=tocado(e);
     elegir(g&&g!==elegido?g:null);
   });
@@ -2840,8 +2903,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     new IntersectionObserver(function(e){visible=e[0].isIntersecting;},{rootMargin:'15% 0px'}).observe(seccion);
   else visible=true;
 
-  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var frente=new THREE.Vector3();
+  var frente=new THREE.Vector3(), tanF=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
   var avisado=false;
   (function loop(){
     requestAnimationFrame(loop);
@@ -2851,19 +2913,28 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
     mueble.rotation.y=-.32+lx*.14;
     mueble.updateMatrixWorld();
     // con un trofeo elegido la estanteria se apaga y queda de fondo
-    var opM=elegido?.13:tMueble.op;
+    // en celular la placa se escribe encima de la estanteria: ahi se apaga casi del todo
+    var opM=elegido?(movil?.06:.13):tMueble.op;
     tMueble.nucleo.opacity+=(opM-tMueble.nucleo.opacity)*.1;
     for(var i=0;i<piezas.length;i++){
       var g=piezas[i], u=g.userData, sel=g===elegido;
       // destino: en su repisa, o adelante y al medio
-      if(sel){frente.set(0,-.75,1.7); mueble.worldToLocal(frente);}
+      var kObj=1;
+      if(sel&&movil){
+        // celular: a mitad de camino hacia la camara, centrado en el hueco que deja la placa
+        var hh=cv.clientHeight, ww=cv.clientWidth, D=d0*.42, vis=2*D*tanF;
+        var arriba=24, abajo=hh-(placa&&placa.offsetHeight?placa.offsetHeight+44:150);
+        var zona=Math.max(80,abajo-arriba);
+        kObj=Math.min(zona*.7/hh*vis/u.alto, ww*.54/hh*vis/u.ancho);
+        frente.set(camX,camY+(hh/2-(arriba+abajo)/2)/hh*vis-kObj*u.alto/2,d0-D);
+        mueble.worldToLocal(frente);
+      }else if(sel){kObj=2.5; frente.set(0,-.75,1.7); mueble.worldToLocal(frente);}
       else frente.copy(u.inicio);
       g.position.lerp(frente,.1);
-      var kObj=sel?2.5:1;
       g.scale.setScalar(g.scale.x+(kObj-g.scale.x)*.1);
       if(!quieto)u.giro.rotation.y+=sel?.012:.003;
       // brillo: sube el elegido o el que esta bajo el puntero, se apagan los demas
-      var obj=(sel||g===foco)?1:(elegido?-1:0);
+      var obj=(sel||g===foco)?1:(elegido?(movil?-2.2:-1):0);
       u.brillo+=(obj-u.brillo)*.12;
       for(var k=0;k<u.trazos.length;k++){
         var t=u.trazos[k], o=Math.max(.06,Math.min(1,t.op*(1+u.brillo*.4)));
