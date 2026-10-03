@@ -11,7 +11,7 @@
 ## Qué hace
 
 - Diseño UX/UI: research, flujos, UI y design systems.
-- Diseño web: sitios publicados de punta a punta.
+- Diseño web: sitios publicados de punta a punta, del boceto a la web en vivo.
 - Motion UX/UI: microinteracciones, prototipos animados y transiciones.
 - 3D: modelado, render y animación, cuando el proyecto lo necesita.
 - Herramientas: Figma, Illustrator, Photoshop, Claude y GitHub.
