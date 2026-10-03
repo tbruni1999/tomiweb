@@ -485,28 +485,28 @@ body.viendo-caso #casos{display:block}
 /* --- pantallas: marcos de navegador y de celular para mostrar sitios ---
    Sin captura se ve un esqueleto de pagina. Con captura (un <img> de pagina completa dentro de
    .pantalla) la imagen arranca arriba y, al pasar el mouse, recorre la pagina hasta el final. */
-.marco{position:relative;background:var(--surf);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+.marco{position:relative;background:var(--surf);border:1px solid var(--line);overflow:hidden;
   transition:border-color .45s,transform .7s cubic-bezier(.2,.8,.2,1)}
 .marco-barra{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-bottom:1px solid var(--line)}
 .marco-barra i{flex:0 0 auto;width:8px;height:8px;border-radius:50%;border:1px solid var(--dim)}
-.marco-url{flex:0 1 46%;margin:0 auto;padding:3px 12px;border:1px solid var(--line);border-radius:999px;
+.marco-url{flex:0 1 46%;margin:0 auto;padding:3px 12px;border:1px solid var(--line);
   font-family:var(--mono);font-size:10px;letter-spacing:var(--tr-text);color:var(--dim);
   text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pantalla{position:relative;aspect-ratio:16/10;overflow:hidden}
 .pantalla img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block;
   background:var(--surf);transition:object-position 7s cubic-bezier(.45,0,.55,1)}
 .proj:hover .pantalla img,.marco:hover .pantalla img{object-position:50% 100%}
-.cel{border-radius:16px;padding:5px}
-.cel .pantalla{aspect-ratio:9/19.5;border-radius:11px;border:1px solid var(--line)}
+.cel{padding:5px}
+.cel .pantalla{aspect-ratio:9/19.5;border:1px solid var(--line)}
 /* esqueleto: el lugar de la captura, dibujado con las mismas lineas del sitio */
 .esq{position:absolute;inset:0;display:flex;flex-direction:column;gap:6%;padding:4% 6% 6%}
-.esq>span{display:block;border:1px solid var(--line);border-radius:3px}
-.esq .esq-nav{flex:0 0 7%;border-width:0 0 1px;border-radius:0}
+.esq>span{display:block;border:1px solid var(--line)}
+.esq .esq-nav{flex:0 0 7%;border-width:0 0 1px}
 .esq-hero{flex:0 0 30%}
 .esq-txt{flex:0 0 3%;width:58%}
 .esq-txt+.esq-txt{width:40%}
 .esq .esq-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:4%;border:0}
-.esq-grid i{border:1px solid var(--line);border-radius:3px}
+.esq-grid i{border:1px solid var(--line)}
 .cel .esq{gap:4%;padding:12% 9% 9%}
 .cel .esq-hero{flex-basis:28%}
 .cel .esq-grid{grid-template-columns:1fr}
@@ -523,7 +523,7 @@ body.viendo-caso #casos{display:block}
   text-transform:uppercase;color:var(--dim)}
 .tira>.w2 figcaption{text-align:center}
 .caso:hover .marco{border-color:rgba(255,122,61,.35)}
-.ph{position:relative;min-height:130px;background:var(--surf);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+.ph{position:relative;min-height:130px;background:var(--surf);border:1px solid var(--line);overflow:hidden;
   aspect-ratio:4/3;transition:border-color .45s}
 .ph::before{content:attr(data-id);position:absolute;top:10px;left:11px;font-family:var(--mono);
   font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim);z-index:1}
