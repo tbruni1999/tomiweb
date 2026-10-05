@@ -510,6 +510,27 @@ body.viendo-caso #casos{display:block}
 .pvacia{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-family:var(--mono);
   font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim);line-height:2.1}
 .pvacia b{display:block;color:var(--ash);font-weight:400}
+.pver{display:none}
+/* pantallas anchas: texto y portada lado a lado, alternando el lado.
+   Asi la portada entra entera en la pantalla y no se estira mas alla de su resolucion. */
+@media(min-width:1100px){
+  .proj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr);column-gap:clamp(36px,4.5vw,96px)}
+  .proj:nth-of-type(even){grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}
+  .pcab{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,2.2vh,26px);
+    padding:18px 0 0;border-top:1px solid var(--line)}
+  .proj:nth-of-type(even) .pcab{order:2;align-items:flex-end;text-align:right}
+  .pt{margin-top:auto;font-size:clamp(44px,4.1vw,108px);line-height:.86}
+  .pdat{text-align:inherit}
+  /* si la pantalla es muy ancha y baja, la portada se achica y queda pegada al borde de la pagina */
+  .ptapa{width:100%;max-width:calc(82svh*1.6);justify-self:end}
+  .proj:nth-of-type(even) .ptapa{justify-self:start}  /* el boton va con el texto: sobre la portada tapaba la interfaz de los sitios */
+  .pir{display:none}
+  .pver{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(4px,1vh,10px);padding:12px 16px;
+    border:1px solid var(--line);color:var(--bone);transition:border-color .35s}
+  .pver i{font-style:normal;color:var(--rim);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .proj:hover .pver{border-color:var(--rim)}
+  .proj:hover .pver i{transform:translate(2px,-2px)}
+}
 .contacto{position:relative;min-height:100svh;display:flex;flex-direction:column;
   padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);
   padding-bottom:clamp(28px,5vh,56px);overflow:hidden}
@@ -834,15 +855,15 @@ body.viendo-caso #casos{display:block}
        Con link, el proyecto es un <a class="proj" href="..." target="_blank" rel="noopener"> y lleva el boton .pir -->
 
   <a class="proj up" href="https://orbitronic-web.tomasbruni1999.workers.dev/" target="_blank" rel="noopener" aria-label="Orbitronic: ver el sitio (se abre en otra pestaña)">
-    <div class="pcab"><span class="pn">/01</span><h3 class="pt">Orbitronic</h3><span class="pdat">Marca · Web 3D<br>2026</span></div>
+    <div class="pcab"><span class="pn">/01</span><h3 class="pt">Orbitronic</h3><span class="pdat">Marca · Web 3D<br>2026</span><span class="pver mono">Ver sitio <i>&#8599;</i></span></div>
     <div class="ptapa"><img src="assets/orbitronic/portada.jpg" style="object-position:0 50%" alt="Orbitronic: el cartel de neón encendido al atardecer, sobre un mar de nubes" width="1200" height="630" loading="lazy" decoding="async"><span class="pir mono">Ver sitio <i>&#8599;</i></span></div>
   </a>
   <a class="proj up" href="https://sedant-web.tomasbruni1999.workers.dev/" target="_blank" rel="noopener" aria-label="Sedant: ver el sitio (se abre en otra pestaña)">
-    <div class="pcab"><span class="pn">/02</span><h3 class="pt">Sedant</h3><span class="pdat">UX/UI · E-commerce<br>2026</span></div>
+    <div class="pcab"><span class="pn">/02</span><h3 class="pt">Sedant</h3><span class="pdat">UX/UI · E-commerce<br>2026</span><span class="pver mono">Ver sitio <i>&#8599;</i></span></div>
     <div class="ptapa"><img src="assets/sedant/portada.webp" alt="Sedant: el perfume Humo sobre humo negro" width="2000" height="1250" loading="lazy" decoding="async"><span class="pir mono">Ver sitio <i>&#8599;</i></span></div>
   </a>
   <a class="proj up" href="https://daiana-guerra-web.pages.dev/" target="_blank" rel="noopener" aria-label="Daiana Guerra: ver el sitio (se abre en otra pestaña)">
-    <div class="pcab"><span class="pn">/03</span><h3 class="pt">Daiana Guerra</h3><span class="pdat">UX/UI · Sitio web<br>2026</span></div>
+    <div class="pcab"><span class="pn">/03</span><h3 class="pt">Daiana Guerra</h3><span class="pdat">UX/UI · Sitio web<br>2026</span><span class="pver mono">Ver sitio <i>&#8599;</i></span></div>
     <div class="ptapa"><span class="pvacia">Portada /03<b>2400 × 1500 px · WebP</b></span><span class="pir mono">Ver sitio <i>&#8599;</i></span></div>
   </a>
 </section>
