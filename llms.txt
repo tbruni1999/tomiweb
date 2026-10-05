@@ -20,7 +20,7 @@
 
 - [Orbitronic](https://orbitronic-web.tomasbruni1999.workers.dev/) (2026): marca y web 3D de una gaseosa inventada de la era atómica de los años 50. Un recorrido con scroll que va del cartel de ruta a una cocina de los 50, al espacio y de vuelta.
 - [Sedant](https://sedant-web.tomasbruni1999.workers.dev/) (2026): marca, sistema de diseño y sitio de e-commerce de una maison de perfumes ficticia. Cuatro fragancias con su propia atmósfera de color, ficha de producto con pirámide olfativa y compra por WhatsApp.
-- [Daiana Guerra](https://daiana-guerra-web.pages.dev/) (2026): sitio web.
+- [Patio](https://patio-web.tomasbruni1999.workers.dev/) (2026): sitio web de un multiespacio que alquila salas para consultas, clases y encuentros, por hora o por bloques semanales.
 
 ## Preguntas frecuentes
 
