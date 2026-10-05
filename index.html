@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="claro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <meta name="author" content="Tomás Bruni">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://tomiweb.tomasbruni1999.workers.dev/">
-<meta name="theme-color" content="#0A0A0B">
+<meta name="theme-color" content="#EFEBE3">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="me" href="https://www.instagram.com/tomibrunirgs/">
@@ -174,16 +174,6 @@ h1 u{text-decoration:none;font-weight:600}
   transform:translateX(calc(var(--word)*-.0098)) rotateY(calc(var(--lx)*-7deg)) rotateX(calc(var(--ly)*4deg))}
 .word i{font-style:normal}
 .word .i{font-style:normal;letter-spacing:0;margin-left:.015em;margin-right:-.013em}
-.nombre{position:absolute;left:50%;transform:translateX(-50%);
-  bottom:calc(100% + var(--word)*.075 + 30px);
-  width:calc(var(--word)*.7405);display:flex;justify-content:space-between;
-  font-family:var(--mono);font-weight:700;font-size:clamp(13px,calc(var(--word)*.055),26px);
-  text-transform:uppercase;line-height:1;color:var(--rim);
-  background:linear-gradient(100deg,var(--rim) 0 40%,#FFCBAB 47%,#FFF6EE 50%,#FFCBAB 53%,var(--rim) 60% 100%);
-  background-size:300% 100%;-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;animation:barrido 4.8s linear infinite}
-.nombre span{display:block}
-@keyframes barrido{from{background-position:160% 0}to{background-position:-160% 0}}
 .bola{position:fixed;left:0;top:0;width:15px;height:15px;border-radius:50%;
   background:var(--rim);z-index:60;pointer-events:none;will-change:transform;
   box-shadow:0 0 22px rgba(255,122,61,.5),0 0 4px rgba(255,122,61,.9)}
@@ -261,17 +251,18 @@ body{transition:background-color .5s ease,color .5s ease}
 
 
 
-/* --- interruptor de tema --- */
-.tema{display:inline-flex;align-items:center;background:none;border:0;padding:0;cursor:pointer}
-.tema-riel{position:relative;display:block;width:46px;height:23px;border-radius:999px;
-  border:1px solid var(--line);background:var(--surf);
-  transition:border-color .35s ease,background-color .5s ease}
-.tema-bola{position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:50%;
-  background:var(--rim);box-shadow:0 0 10px rgba(255,122,61,.35);
-  transition:transform .42s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
-.claro .tema-bola{transform:translateX(23px);box-shadow:0 0 10px rgba(176,62,16,.3)}
-.tema:hover .tema-riel{border-color:var(--rim)}
-.tema:hover .tema-bola{box-shadow:0 0 14px rgba(255,122,61,.6)}
+/* --- interruptor de tema: muestra el modo actual, sol en claro y luna en oscuro --- */
+.tema{position:relative;display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
+  background:none;border:1px solid var(--line);padding:0;color:var(--rim);cursor:pointer;transition:border-color .35s ease}
+.tema-ico{width:18px;height:18px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;transition:filter .35s}
+.tema-sol,.tema-luna{transform-box:fill-box;transform-origin:center;
+  transition:opacity .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.tema-sol{opacity:0;transform:rotate(-90deg) scale(.4)}
+.claro .tema-sol{opacity:1;transform:none}
+.claro .tema-luna{opacity:0;transform:rotate(70deg) scale(.4)}
+.tema:hover{border-color:var(--rim)}
+.tema:hover .tema-ico{filter:drop-shadow(0 0 5px rgba(255,122,61,.55))}
 .mp-pie .tema{margin-left:auto}
 @media(max-width:620px){.bar .tema{display:none}}
 
@@ -589,7 +580,8 @@ body.viendo-caso #casos{display:block}
   .clinks a{padding:16px 0}
   .mp-links a,.mp-links .disc{padding:16px 0}
   .menu{padding:14px 10px;margin:-14px -10px}
-  .mp-cerrar,.tema{padding:10px 0}
+  .mp-cerrar{padding:10px 0}
+  .tema{width:44px;height:44px}
 
   /* encabezados de seccion: dejan de competir en una sola linea */
   .ohead,.cpie{flex-direction:column;align-items:flex-start;gap:6px}
@@ -690,7 +682,7 @@ body.viendo-caso #casos{display:block}
 @media(max-width:620px){.menu-t{display:none}}
 </style>
 </head>
-<body>
+<body class="claro">
 <script>
 /* Navegación interna: las páginas (proyectos, sobre mí, trofeos) viven en el mismo documento,
    pero cada una tiene su URL con hash. Así funcionan el botón atrás, recargar y compartir el link. */
@@ -743,9 +735,12 @@ body.viendo-caso #casos{display:block}
   </div>
   <div class="mp-pie">
     <span class="mono">Montevideo · UY</span>
-    <button class="tema" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre claro y oscuro">
-    <span class="tema-riel"><i class="tema-bola"></i></span>
-      </button>
+    <button class="tema" type="button" role="switch" aria-checked="true" aria-label="Modo claro">
+      <svg class="tema-ico" viewBox="0 0 24 24" aria-hidden="true">
+        <g class="tema-sol"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.3M12 19.1v2.3M2.6 12h2.3M19.1 12h2.3M5.35 5.35l1.6 1.6M17.05 17.05l1.6 1.6M5.35 18.65l1.6-1.6M17.05 6.95l1.6-1.6"/></g>
+        <path class="tema-luna" d="M20.5 13.1A8.6 8.6 0 1 1 10.9 3.5a6.7 6.7 0 0 0 9.6 9.6z"/>
+      </svg>
+    </button>
     <a class="mono" href="mailto:hola@tomasbruni.com">hola@tomasbruni.com</a>
   </div>
 </nav>
@@ -762,9 +757,12 @@ body.viendo-caso #casos{display:block}
       <span class="mark">Tomás Bruni<sup>®</sup></span>
     </div>
     <div class="clock"><span class="mono">Hora local</span><b class="num" id="t">--:--:--</b></div>
-    <button class="tema" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre claro y oscuro">
-        <span class="tema-riel"><i class="tema-bola"></i></span>
-      </button>
+    <button class="tema" type="button" role="switch" aria-checked="true" aria-label="Modo claro">
+      <svg class="tema-ico" viewBox="0 0 24 24" aria-hidden="true">
+        <g class="tema-sol"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.3M12 19.1v2.3M2.6 12h2.3M19.1 12h2.3M5.35 5.35l1.6 1.6M17.05 17.05l1.6 1.6M5.35 18.65l1.6-1.6M17.05 6.95l1.6-1.6"/></g>
+        <path class="tema-luna" d="M20.5 13.1A8.6 8.6 0 1 1 10.9 3.5a6.7 6.7 0 0 0 9.6 9.6z"/>
+      </svg>
+    </button>
     <a class="cta" href="#contacto"><span>Iniciar proyecto</span><em aria-hidden="true">→</em></a>
   </header>
 
@@ -819,7 +817,6 @@ body.viendo-caso #casos{display:block}
       <b class="mono works">Trabajos [03]</b>
     </div>
     <div class="wordwrap">
-      <div class="nombre" aria-hidden="true"><span>T</span><span>o</span><span>m</span><span>á</span><span>s</span></div>
       <h2 class="word" id="word" aria-label="Tomás Bruni">
         <span class="rimly" aria-hidden="true">BRUN<em class="i">I</em></span>
         <span class="face" aria-hidden="true">BRUN<em class="i">I</em></span>
@@ -2635,17 +2632,25 @@ window.__trazos=function(rend){
 (function(){
   var botones=document.querySelectorAll('.tema');
   if(!botones.length)return;
-  var claro=false;
+  // la pagina abre siempre en claro; el oscuro dura hasta recargar
+  var claro=true, meta=document.querySelector('meta[name="theme-color"]');
   function aplicar(){
     document.documentElement.classList.toggle('claro',claro);
     document.body.classList.toggle('claro',claro);
-    [].forEach.call(botones,function(b){b.setAttribute('aria-checked',claro?'true':'false');});
+    if(meta)meta.setAttribute('content',claro?'#EFEBE3':'#0A0A0B');
+    [].forEach.call(botones,function(b){
+      b.setAttribute('aria-checked',claro?'true':'false');
+      b.setAttribute('aria-label',claro?'Modo claro':'Modo oscuro');
+    });
     if(window.__temaWordmark)window.__temaWordmark();
     if(window.__temaTres)window.__temaTres.forEach(function(f){f(claro);});
   }
   [].forEach.call(botones,function(b){
     b.addEventListener('click',function(){claro=!claro;aplicar();});
   });
+  // las escenas 3D que se arman despues de este script tambien tienen que arrancar en claro
+  aplicar();
+  document.addEventListener('DOMContentLoaded',aplicar);
 })();
 </script>
 <script>
