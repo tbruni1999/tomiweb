@@ -195,7 +195,8 @@ h1 u{text-decoration:none;font-weight:600}
 .go .d4{transition-delay:.38s}.go .d5{transition-delay:.5s}
 
 @media(max-width:860px){
-  .grid{grid-template-columns:repeat(2,1fr)}
+  /* en celular la grilla queda solo con los bordes: la linea del medio cortaba el texto */
+  .grid span+span{border-left-color:transparent}
   .clock{display:none}
   .note{max-width:none}
   .thesis{max-width:none}
@@ -217,12 +218,13 @@ h1 u{text-decoration:none;font-weight:600}
 @keyframes aparecer{from{opacity:0}to{opacity:1}}
 /* la pagina entra subiendo */
 body.entrando #casos>*.activo{animation:entrar .62s cubic-bezier(.2,.8,.2,1) both}
+body.entrando #casos>.cierre{animation:entrar .62s cubic-bezier(.2,.8,.2,1) .08s both}
 /* el inicio solo se desvanece: moverlo arrastraria el canvas del hero */
 body.entrando:not(.viendo-caso) .inicio{animation:aparecer .55s cubic-bezier(.2,.8,.2,1) both}
 body.entrando:not(.viendo-caso) .obra{animation-delay:.05s}
 body.entrando:not(.viendo-caso) .contacto{animation-delay:.1s}
 @media(prefers-reduced-motion:reduce){
-  body.entrando #casos>*.activo,
+  body.entrando #casos>*.activo,body.entrando #casos>.cierre,
   body.entrando:not(.viendo-caso) .inicio{animation:none}
 }
 
@@ -419,7 +421,7 @@ body.viendo-caso #casos{display:block}
 }
 
 /* --- sobre mi: capitulos en una columna centrada; cada titulo lleva su forma 3D chiquita --- */
-.sobre{position:relative;padding:0 var(--gut) clamp(40px,8vh,100px)}
+.sobre{position:relative;padding:0 var(--gut) clamp(8px,2vh,24px)}   /* abajo sigue el cierre de contacto */
 .sobre .caso-nav{margin-bottom:0}
 .sobre .caso-nav b{color:var(--bone);font-weight:700}
 /* cada capitulo: el texto y, si lo tiene, un costado de 300 px (la foto, la lista) */
@@ -541,6 +543,74 @@ body.viendo-caso #casos{display:block}
 .cpie{position:relative;z-index:2;display:flex;justify-content:space-between;gap:20px;
   padding-left:var(--pad);padding-right:var(--pad);padding-top:14px;border-top:1px solid var(--line)}
 @media(max-width:860px){.cbloque{max-width:none}}
+button.cta{background:none;padding:0;color:var(--bone);cursor:pointer}
+.ccta{align-self:flex-start;margin-bottom:clamp(22px,3.6vh,36px)}
+
+/* --- cierre de las paginas internas: abajo de todo siempre hay un contacto --- */
+#casos>.cierre{display:block}
+.cierre{position:relative;padding:clamp(28px,6vh,90px) var(--gut) clamp(28px,5vh,56px);overflow:hidden}
+.cierre-in{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  gap:28px 40px;padding:0 var(--pad) clamp(44px,9vh,100px)}
+.cierre .ctitulo{margin-bottom:0}
+.cierre-acc{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.cierre-acc a{color:var(--bone);transition:color .3s}
+.cierre-acc a:hover{color:var(--rim)}
+.cierre .cta,.ccta{height:48px}
+.cierre .cta em,.ccta em{width:48px;font-size:14px}
+
+/* --- formulario de contacto: lo abre el mail; al enviar arma el correo con todo cargado --- */
+.fcont{position:fixed;inset:0;margin:auto;width:min(680px,calc(100% - 2*var(--gut)));max-width:none;
+  height:fit-content;max-height:min(92dvh,920px);padding:0;border:1px solid var(--line);
+  background:var(--void);color:var(--bone);overflow:auto;overscroll-behavior:contain}
+.fcont::backdrop{background:rgba(10,10,11,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.fcont[open]{animation:entrar .5s cubic-bezier(.2,.8,.2,1) both}
+html.form-abierto{overflow:hidden}
+.fcab{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px clamp(18px,3vw,32px);border-bottom:1px solid var(--line);background:var(--void)}
+.fcerrar{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--line);background:none;
+  color:var(--bone);font-family:var(--mono);font-size:16px;line-height:1;cursor:pointer;transition:border-color .3s,color .3s}
+.fcerrar:hover{border-color:var(--rim);color:var(--rim)}
+.fcuerpo{padding:clamp(22px,4vh,34px) clamp(18px,3vw,32px) clamp(24px,4vh,34px)}
+.ftitulo{font-family:var(--wide);font-weight:200;font-size:clamp(26px,3.4vw,40px);line-height:1.04;
+  letter-spacing:-.015em;text-transform:uppercase;margin-bottom:12px}
+.ftitulo u{text-decoration:none;font-weight:600}
+.fform>.note,.fok .note{margin-bottom:26px}
+.fgrupo{border:0;margin:0 0 24px;padding:0;min-width:0}
+.fgrupo legend,.fcampo>span{display:block;padding:0;margin-bottom:11px;font-family:var(--mono);font-size:11px;
+  letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--ash)}
+.fchips{display:flex;flex-wrap:wrap;gap:8px}
+.fchip{position:relative;display:block;cursor:pointer}
+.fchip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.fchip span{display:block;padding:10px 13px;border:1px solid var(--line);font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.02em;color:var(--bone);transition:border-color .25s,background-color .25s,color .25s}
+@media(hover:hover){.fchip:hover span{border-color:var(--rim)}}
+.fchip input:checked+span{background:var(--rim);border-color:var(--rim);color:var(--void)}
+.fchip input:focus-visible+span{outline:1.5px solid var(--rim);outline-offset:3px}
+.fdos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 26px}
+.fcampo{display:block;margin-bottom:22px}
+.fcampo input,.fcampo textarea{display:block;width:100%;padding:9px 0;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;background:none;color:var(--bone);font-family:var(--mono);font-size:14px;outline:0;
+  transition:border-color .25s}
+.fcampo textarea{min-height:92px;resize:vertical;line-height:1.6}
+.fcampo input:focus,.fcampo textarea:focus{border-bottom-color:var(--rim)}
+.fcampo input::placeholder,.fcampo textarea::placeholder{color:var(--dim);opacity:1}
+.fpie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px;margin-top:8px}
+.fpie small{font-family:var(--mono);font-size:11px;color:var(--ash);max-width:34ch;line-height:1.6}
+.fcont .cta{height:46px}
+.fcont .cta em{width:46px}
+.fok{display:none}
+.fcont.enviado .fform{display:none}
+.fcont.enviado .fok{display:block}
+.fok a{color:var(--rim)}
+.fcopiar{padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;cursor:pointer;color:var(--bone)}
+.fcopiar:hover{border-bottom-color:var(--rim)}
+@media(max-width:620px){
+  .fcont{width:100%;height:100%;max-height:none;border:0}
+  .fdos{grid-template-columns:minmax(0,1fr)}
+  /* 16px: con menos, el iPhone hace zoom al escribir */
+  .fcampo input,.fcampo textarea{font-size:16px}
+  .fchip span{padding:12px 13px}
+}
 
 .up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
 .up.in{opacity:1;transform:none}
@@ -563,9 +633,9 @@ body.viendo-caso #casos{display:block}
   :root{--gut:18px;--pad:12px}
 
   /* la barra estaba al 84% de su ancho: el boton se reduce a su flecha */
-  .cta span{display:none}
-  .cta{height:38px}
-  .cta em{width:44px;height:38px;font-size:15px}
+  .bar .cta span{display:none}
+  .bar .cta{height:38px}
+  .bar .cta em{width:44px;height:38px;font-size:15px}
   .bar .left{gap:18px}
   .mark{font-size:11.5px}
 
@@ -614,9 +684,9 @@ body.viendo-caso #casos{display:block}
 @media(max-width:620px){
   .bar{padding:16px var(--pad)}
   .bar .left{gap:16px}
-  .cta{height:34px}
-  .cta span{padding:0 11px;font-size:10px}
-  .cta em{width:34px}
+  .bar .cta{height:34px}
+  .bar .cta span{padding:0 11px;font-size:10px}
+  .bar .cta em{width:34px}
   .mark{font-size:11px}
   .thesis{gap:clamp(18px,3vh,28px)}
   .idx{margin-top:4px}
@@ -678,6 +748,8 @@ body.viendo-caso #casos{display:block}
 @media (hover:hover) and (pointer:fine){
   html.sin-puntero, html.sin-puntero *{cursor:none!important}
   html.sin-puntero body.jugando, html.sin-puntero body.jugando *{cursor:auto!important}
+  html.sin-puntero.form-abierto .fcont, html.sin-puntero.form-abierto .fcont *{cursor:auto!important}
+  html.sin-puntero.form-abierto .fcont :is(button,label,a,input[type=checkbox],input[type=radio]){cursor:pointer!important}
 }
 @media(max-width:620px){.menu-t{display:none}}
 </style>
@@ -880,6 +952,7 @@ body.viendo-caso #casos{display:block}
       <a href="https://www.instagram.com/tomibrunirgs/" target="_blank" rel="noopener me"><span class="num n">/02</span><span class="d">Instagram · @tomibrunirgs</span></a>
     </div>
     <p class="note up">Respondo en menos de 48 horas. Contame el proyecto, los plazos y el presupuesto que manejás.</p>
+    <button class="cta ccta up" type="button" data-form><span>Empezar un proyecto</span><em aria-hidden="true">&#8594;</em></button>
   </div>
 
   <div class="cpie up"><span class="mono">Tomás Bruni® — 2026</span><span class="mono">Hecho en Montevideo</span></div>
@@ -998,8 +1071,76 @@ body.viendo-caso #casos{display:block}
     </div>
   </div>
 </section>
+
+<!-- abajo de todas las paginas internas -->
+<aside class="cierre" aria-labelledby="cierre-t">
+  <div class="grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <header class="ohead"><b>Contacto</b><span>Respondo en menos de 48 horas</span></header>
+  <div class="cierre-in">
+    <h2 class="ctitulo" id="cierre-t">Contame<br><u>tu proyecto.</u></h2>
+    <div class="cierre-acc">
+      <button class="cta" type="button" data-form><span>Empezar un proyecto</span><em aria-hidden="true">&#8594;</em></button>
+      <a class="mono" href="https://www.instagram.com/tomibrunirgs/" target="_blank" rel="noopener me">Instagram · @tomibrunirgs</a>
+    </div>
+  </div>
+  <div class="cpie"><span class="mono">Tomás Bruni® — 2026</span><span class="mono">Hecho en Montevideo</span></div>
+</aside>
 </div>
 </main>
+
+<dialog class="fcont" id="form-contacto" aria-labelledby="form-t">
+  <div class="fcab"><span class="mono">Nuevo proyecto</span><button class="fcerrar" type="button" aria-label="Cerrar">&#10005;</button></div>
+  <div class="fcuerpo">
+    <form class="fform" novalidate>
+      <h2 class="ftitulo" id="form-t">Contame<br><u>tu proyecto.</u></h2>
+      <p class="note">Marcá lo que aplique y contame en dos líneas. Al enviar se abre tu correo con todo cargado.</p>
+      <fieldset class="fgrupo"><legend>¿Qué necesitás?</legend>
+        <div class="fchips">
+          <label class="fchip"><input type="checkbox" name="que" value="Sitio web"><span>Sitio web</span></label>
+          <label class="fchip"><input type="checkbox" name="que" value="E-commerce"><span>E-commerce</span></label>
+          <label class="fchip"><input type="checkbox" name="que" value="UX/UI de app o producto"><span>UX/UI de app o producto</span></label>
+          <label class="fchip"><input type="checkbox" name="que" value="Marca"><span>Marca</span></label>
+          <label class="fchip"><input type="checkbox" name="que" value="Motion / 3D"><span>Motion / 3D</span></label>
+          <label class="fchip"><input type="checkbox" name="que" value="Otra cosa"><span>Otra cosa</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="fgrupo"><legend>Presupuesto</legend>
+        <div class="fchips">
+          <label class="fchip"><input type="radio" name="presupuesto" value="Menos de US$ 1.000"><span>Menos de US$ 1.000</span></label>
+          <label class="fchip"><input type="radio" name="presupuesto" value="US$ 1.000 – 3.000"><span>US$ 1.000 – 3.000</span></label>
+          <label class="fchip"><input type="radio" name="presupuesto" value="US$ 3.000 – 6.000"><span>US$ 3.000 – 6.000</span></label>
+          <label class="fchip"><input type="radio" name="presupuesto" value="Más de US$ 6.000"><span>Más de US$ 6.000</span></label>
+          <label class="fchip"><input type="radio" name="presupuesto" value="Todavía no sé"><span>Todavía no sé</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="fgrupo"><legend>Plazo</legend>
+        <div class="fchips">
+          <label class="fchip"><input type="radio" name="plazo" value="Lo antes posible"><span>Lo antes posible</span></label>
+          <label class="fchip"><input type="radio" name="plazo" value="En 1 o 2 meses"><span>En 1 o 2 meses</span></label>
+          <label class="fchip"><input type="radio" name="plazo" value="Sin apuro"><span>Sin apuro</span></label>
+        </div>
+      </fieldset>
+      <div class="fdos">
+        <label class="fcampo"><span>Nombre</span><input name="nombre" type="text" autocomplete="name" required placeholder="Cómo te llamás"></label>
+        <label class="fcampo"><span>Mail</span><input name="email" type="email" autocomplete="email" required placeholder="Para responderte"></label>
+      </div>
+      <label class="fcampo"><span>El proyecto</span><textarea name="mensaje" rows="3" placeholder="Qué es, para quién y cualquier link que sirva"></textarea></label>
+      <div class="fpie">
+        <small>Se abre tu correo con todo cargado: solo falta tocar enviar.</small>
+        <button class="cta" type="submit"><span>Enviar</span><em aria-hidden="true">&#8594;</em></button>
+      </div>
+    </form>
+    <div class="fok" role="status">
+      <p class="ftitulo">Listo.<br><u>Se abrió tu correo.</u></p>
+      <p class="note">Está todo cargado: solo falta tocar enviar. Respondo en menos de 48 horas.</p>
+      <p class="note">¿No se abrió? Copiá el mensaje y mandalo a <a href="mailto:hola@tomasbruni.com">hola@tomasbruni.com</a>.</p>
+      <div class="fpie">
+        <button class="fcopiar mono" type="button">Copiar mensaje</button>
+        <button class="cta fvolver" type="button"><span>Cerrar</span><em aria-hidden="true">&#10005;</em></button>
+      </div>
+    </div>
+  </div>
+</dialog>
 
 <script>
 document.body.classList.add('go');
@@ -1025,7 +1166,7 @@ document.body.classList.add('go');
 /* --- enrutado por hash: la tapa lleva a la pagina del proyecto --- */
 (function(){
   var casos=document.getElementById('casos'); if(!casos)return;
-  var ids={}; [].forEach.call(casos.children,function(a){ids[a.id]=a;});
+  var ids={}; [].forEach.call(casos.children,function(a){if(a.id)ids[a.id]=a;});   // el cierre no tiene id: no es una pagina
   function escalonar(cont){
     var ups=cont.querySelectorAll('.up');
     [].forEach.call(ups,function(e,i){
@@ -2971,6 +3112,62 @@ window.__trazos=function(rend){
     rend.render(scene,cam);
     }catch(e){ if(!avisado){avisado=true;console.warn('escena 3D:',e.message);} }
   })();
+})();
+</script>
+<script>
+/* --- formulario de contacto: cualquier link de mail (y los botones data-form) lo abren.
+   No hay servidor: al enviar se arma el correo con todo cargado y se abre la app de mail. --- */
+(function(){
+  var dlg=document.getElementById('form-contacto');
+  if(!dlg||typeof dlg.showModal!=='function')return;     // sin <dialog>: los links siguen siendo mailto
+  var MAIL='hola@tomasbruni.com';
+  var form=dlg.querySelector('.fform'), raiz=document.documentElement, desde=null, texto='', apretado=null;
+  function abrir(origen){
+    desde=origen;
+    dlg.classList.remove('enviado');
+    raiz.classList.add('form-abierto');
+    dlg.showModal();
+    dlg.scrollTop=0;
+  }
+  function cerrar(){ if(dlg.open)dlg.close(); }
+  dlg.addEventListener('close',function(){
+    raiz.classList.remove('form-abierto');
+    if(desde&&desde.focus)desde.focus({preventScroll:true});
+  });
+  dlg.querySelector('.fcerrar').addEventListener('click',cerrar);
+  dlg.querySelector('.fvolver').addEventListener('click',cerrar);
+  // tocar el fondo cierra; arrastrar desde un campo hasta afuera no
+  dlg.addEventListener('pointerdown',function(e){apretado=e.target;});
+  dlg.addEventListener('click',function(e){ if(e.target===dlg&&apretado===dlg)cerrar(); });
+
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest('a[href^="mailto:"],[data-form]');
+    if(!a||dlg.contains(a))return;          // el mail escrito dentro del formulario sigue abriendo el correo
+    e.preventDefault();
+    abrir(a);
+  });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.reportValidity())return;
+    var d=new FormData(form), nombre=(d.get('nombre')||'').trim();
+    texto=['Hola Tomás,','',(d.get('mensaje')||'').trim()||'Te escribo por un proyecto.','',
+      'Qué necesito: '+(d.getAll('que').join(', ')||'—'),
+      'Presupuesto: '+(d.get('presupuesto')||'—'),
+      'Plazo: '+(d.get('plazo')||'—'),'',
+      nombre,(d.get('email')||'').trim()].join('\r\n');
+    var url='mailto:'+MAIL+'?subject='+encodeURIComponent('Proyecto nuevo — '+nombre)+'&body='+encodeURIComponent(texto);
+    dlg.classList.add('enviado');
+    dlg.scrollTop=0;
+    location.href=url;
+  });
+
+  var copiar=dlg.querySelector('.fcopiar');
+  copiar.addEventListener('click',function(){
+    var listo=function(){copiar.textContent='Copiado';setTimeout(function(){copiar.textContent='Copiar mensaje';},1800);};
+    if(navigator.clipboard)navigator.clipboard.writeText(texto).then(listo,function(){});
+  });
 })();
 </script>
 <script>
