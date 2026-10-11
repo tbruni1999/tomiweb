@@ -709,12 +709,17 @@ html.form-abierto{overflow:hidden}
   /* la lista no se despliega: la ficha del elegido va abajo del 3D, como la placa de una vitrina.
      Asi tocar un trofeo no cambia el alto de nada y la pagina no se mueve. */
   .tdet{display:none}
-  /* placa de color solido: la vitrina tiene piezas oscuras y el texto no se podia leer encima */
-  .tleyenda{display:block;position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px var(--gut) 22px;
-    background:var(--void);border-top:1px solid var(--line);
+  /* tarjeta de color solido: la vitrina tiene piezas oscuras y el texto no se podia leer encima.
+     Se toca para cerrarla. */
+  .tleyenda{display:block;position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(14px,3svh,28px);z-index:2;
+    max-width:440px;margin:0 auto;padding:18px 20px 16px;cursor:pointer;
+    background:var(--void);border:1px solid var(--line);border-top:2px solid var(--rim);
+    box-shadow:0 14px 30px -18px rgba(22,21,15,.45);
     text-align:center;pointer-events:none;opacity:0;transform:translateY(8px);
     transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
-  .tleyenda.ver{opacity:1;transform:none}
+  .tleyenda.ver{opacity:1;transform:none;pointer-events:auto}
+  .tleyenda.ver:active{transform:translateY(1px)}
+  .tleyenda .tocar{display:block;font-style:normal;margin-top:12px;font-size:9.5px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--dim)}
   .tleyenda b{display:block;font-weight:700;font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--rim)}
   .tleyenda span{display:block;max-width:40ch;margin:7px auto 0;font-size:10.5px;text-transform:none;letter-spacing:var(--tr-text);color:var(--bone);opacity:.72}
   .tleyenda p{max-width:36ch;margin:8px auto 0;font-size:11.5px;line-height:1.6;text-transform:none;letter-spacing:var(--tr-text);color:var(--ash)}
@@ -1012,7 +1017,7 @@ html.form-abierto{overflow:hidden}
     </div>
     <div class="tforma" aria-hidden="true"></div>
   </div>
-  <div class="tleyenda mono" aria-live="polite"><b></b><span></span><p></p></div>
+  <div class="tleyenda mono" aria-live="polite" role="button" tabindex="0" aria-label="Cerrar la ficha"><b></b><span></span><p></p><i class="tocar">Tocá para cerrar</i></div>
 </section>
 
 <section class="sobre" id="sobre">
@@ -3007,6 +3012,11 @@ window.__trazos=function(rend){
     inscribir(g);
   }
   // celular: la ficha del elegido se lee abajo del 3D (en la lista no se despliega)
+  // tocar la tarjeta la cierra: el trofeo vuelve a su repisa
+  if(placa){
+    placa.addEventListener('click',function(){elegir(null);});
+    placa.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();elegir(null);}});
+  }
   function inscribir(g){
     if(!placa)return;
     placa.classList.remove('ver');
