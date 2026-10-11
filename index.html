@@ -969,7 +969,7 @@ html.form-abierto{overflow:hidden}
       <a href="mailto:hola@tomasbruni.com"><span class="num n">/01</span><span class="d">hola@tomasbruni.com</span></a>
       <a href="https://www.instagram.com/tomibrunirgs/" target="_blank" rel="noopener me"><span class="num n">/02</span><span class="d">Instagram · @tomibrunirgs</span></a>
     </div>
-    <p class="note up">Respondo en menos de 48 horas. Contame el proyecto, los plazos y el presupuesto que manejás.</p>
+    <p class="note up">Respondo en menos de 48 horas. Contame el proyecto y los plazos que manejás.</p>
     <button class="cta ccta up" type="button" data-form><span>Empezar un proyecto</span><em aria-hidden="true">&#8594;</em></button>
   </div>
 
@@ -1098,20 +1098,10 @@ html.form-abierto{overflow:hidden}
       <fieldset class="fgrupo"><legend>¿Qué necesitás?</legend>
         <div class="fchips">
           <label class="fchip"><input type="checkbox" name="que" value="Sitio web"><span>Sitio web</span></label>
-          <label class="fchip"><input type="checkbox" name="que" value="E-commerce"><span>E-commerce</span></label>
           <label class="fchip"><input type="checkbox" name="que" value="UX/UI de app o producto"><span>UX/UI de app o producto</span></label>
           <label class="fchip"><input type="checkbox" name="que" value="Marca"><span>Marca</span></label>
           <label class="fchip"><input type="checkbox" name="que" value="Motion / 3D"><span>Motion / 3D</span></label>
           <label class="fchip"><input type="checkbox" name="que" value="Otra cosa"><span>Otra cosa</span></label>
-        </div>
-      </fieldset>
-      <fieldset class="fgrupo"><legend>Presupuesto</legend>
-        <div class="fchips">
-          <label class="fchip"><input type="radio" name="presupuesto" value="Menos de US$ 1.000"><span>Menos de US$ 1.000</span></label>
-          <label class="fchip"><input type="radio" name="presupuesto" value="US$ 1.000 – 3.000"><span>US$ 1.000 – 3.000</span></label>
-          <label class="fchip"><input type="radio" name="presupuesto" value="US$ 3.000 – 6.000"><span>US$ 3.000 – 6.000</span></label>
-          <label class="fchip"><input type="radio" name="presupuesto" value="Más de US$ 6.000"><span>Más de US$ 6.000</span></label>
-          <label class="fchip"><input type="radio" name="presupuesto" value="Todavía no sé"><span>Todavía no sé</span></label>
         </div>
       </fieldset>
       <fieldset class="fgrupo"><legend>Plazo</legend>
@@ -3197,7 +3187,6 @@ window.__trazos=function(rend){
     var d=new FormData(form), nombre=(d.get('nombre')||'').trim();
     texto=['Hola Tomás,','',(d.get('mensaje')||'').trim()||'Te escribo por un proyecto.','',
       'Qué necesito: '+(d.getAll('que').join(', ')||'—'),
-      'Presupuesto: '+(d.get('presupuesto')||'—'),
       'Plazo: '+(d.get('plazo')||'—'),'',
       nombre,(d.get('email')||'').trim()].join('\r\n');
     var url='mailto:'+MAIL+'?subject='+encodeURIComponent('Proyecto nuevo — '+nombre)+'&body='+encodeURIComponent(texto);
