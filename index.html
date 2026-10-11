@@ -468,7 +468,11 @@ body.viendo-caso #casos{display:block}
 .card figcaption{position:absolute;left:12px;bottom:11px;z-index:2;
   font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--ash)}
 @media(max-width:860px){.card{width:min(100%,340px)}}
-@media(max-width:620px){.card{width:100%;aspect-ratio:4/3}}
+/* celular: vertical y con la cara entera, sin el zoom de escritorio */
+@media(max-width:620px){
+  .card{width:100%;aspect-ratio:4/5}
+  .card-foto{left:0;top:-7%;width:100%;height:122%;object-position:50% 12%}
+}
 
 .obra{position:relative;padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);padding-bottom:clamp(80px,13vh,150px)}
 .obra .grid{padding:0 var(--gut)}
@@ -1023,20 +1027,17 @@ html.form-abierto{overflow:hidden}
     <b class="mono">Sobre mí</b>
   </div>
 
-  <!-- cada titulo lleva su forma: 01 esfera, 02 cubo, 03 piramide (se arma desde la anterior al entrar en pantalla) -->
+  <!-- cada titulo lleva su forma: 01 esfera, 02 cubo (se arma desde la anterior al entrar en pantalla) -->
   <div class="scapitulo">
     <div class="sbloque">
-      <span class="scap mono">01 — Trabajo</span>
+      <span class="scap mono">01 — Quién soy</span>
       <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Tiempo y práctica:<br><u>así llegué acá.</u></h2></div>
-      <p class="note">Empecé haciendo flyers para fiestas que nadie recuerda y terminé dirigiendo
-      piezas para marcas que sí. En el medio aprendí que la parte difícil nunca es el render:
-      es entender qué tiene que sentir alguien cuando lo ve.</p>
-      <p class="note">Trabajo desde Montevideo, solo o armando equipo según el proyecto.
-      Me interesan el 3D, la tipografía y las cosas que se mueven.</p>
+      <p class="note">Soy Tomás, diseñador UX/UI en Montevideo. Desde 2016 diseño interfaces y sitios web
+      de punta a punta, con motion para que se entiendan mejor y 3D cuando suma. Trabajo solo o
+      armando equipo según el proyecto.</p>
       <div class="sdatos">
         <span class="mono">Base <b>Montevideo, UY</b></span>
         <span class="mono">Desde <b>2016</b></span>
-        <span class="mono">Herramientas <b>Figma · Illustrator · Photoshop · Claude · GitHub</b></span>
       </div>
     </div>
     <figure class="card up">
@@ -1048,20 +1049,8 @@ html.form-abierto{overflow:hidden}
 
   <div class="scapitulo">
     <div class="sbloque">
-      <span class="scap mono">02 — Fuera de pantalla</span>
-      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Y cuando<br><u>cierro la compu.</u></h2></div>
-      <p class="note">Salgo a caminar con mi perro, que opina poco pero opina. Cocino más de lo
-      que como. Me obsesiono con cosas que (a veces) termino y escucho demasiada música.</p>
-      <p class="note">Y me gustan los jueguitos de computadora, más de lo que debería admitir en un portfolio.</p>
-    </div>
-  </div>
-
-  <div class="scapitulo">
-    <div class="sbloque">
-      <span class="scap mono">03 — Habilidades</span>
+      <span class="scap mono">02 — Habilidades</span>
       <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Lo que<br><u>sé hacer.</u></h2></div>
-      <p class="note">Diseño de interfaces de punta a punta: investigación, flujos, UI y
-      sistemas. Motion para que las pantallas se entiendan mejor, no solo para que se muevan.</p>
     </div>
     <div class="shab">
       <span class="mono"><b>UX/UI</b> Research · Flujos · UI · Design systems</span>
@@ -1516,6 +1505,7 @@ window.__trazos=function(rend){
     return m;
   }
   function malla(g,m){var t=new THREE.Mesh(g,m); t.raycast=function(){}; return t;}   // los clics solo prueban el solido
+  rend.getDrawingBufferSize(RES.value);    // nunca 1x1: con eso cada trazo taparia toda la pantalla
   return {separar:separar,geo:geo,material:material,malla:malla,
     ajustar:function(){rend.getDrawingBufferSize(RES.value);},
     // el grosor acompaña el tamaño del dibujo: chico en celular, sin empastar
@@ -1744,6 +1734,9 @@ window.__trazos=function(rend){
     T.ajustar();
   }
   fit(); addEventListener('resize',fit,{passive:true});
+  // el canvas puede no tener tamaño en el primer cuadro (pasa en el celular al abrir):
+  // se vuelve a encuadrar apenas lo tiene, sin esperar a un resize de la ventana
+  if(window.ResizeObserver)new ResizeObserver(function(){fit();}).observe(cv);
 
   var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches,visible=true;
   if('IntersectionObserver' in window)
@@ -1929,6 +1922,9 @@ window.__trazos=function(rend){
     T.escala(Math.max(.62,Math.min(1,w/760)));
   }
   fit(); addEventListener('resize',fit,{passive:true});
+  // el canvas puede no tener tamaño en el primer cuadro (pasa en el celular al abrir):
+  // se vuelve a encuadrar apenas lo tiene, sin esperar a un resize de la ventana
+  if(window.ResizeObserver)new ResizeObserver(function(){fit();}).observe(cv);
 
   // hover: se levanta el tubo, como al atender
   var alza=0,alzaObj=0;
@@ -3000,6 +2996,9 @@ window.__trazos=function(rend){
     cam.updateProjectionMatrix(); rend.setSize(w,hh,false);
   }
   fit(); addEventListener('resize',fit,{passive:true});
+  // el canvas puede no tener tamaño en el primer cuadro (pasa en el celular al abrir):
+  // se vuelve a encuadrar apenas lo tiene, sin esperar a un resize de la ventana
+  if(window.ResizeObserver)new ResizeObserver(function(){fit();}).observe(cv);
 
   // --- seleccion: la lista y el 3D son la misma cosa
   var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
