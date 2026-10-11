@@ -459,20 +459,14 @@ body.viendo-caso #casos{display:block}
   transition:border-color .4s}
 .card:hover{border-color:var(--rim)}
 /* mismo encuadre alto que la foto del home, con margen para el parallax del mouse */
-.card-foto{position:absolute;left:-6%;top:-48%;width:112%;height:192%;display:block;
+.card-foto{position:absolute;left:0;top:-42.9%;width:100%;height:171.4%;display:block;
   object-fit:cover;object-position:50% 0;
   transform:translate(calc(var(--lx)*-14px),calc(var(--ly)*-10px));
-  filter:grayscale(.35) contrast(1.06)}
-.card-velo{position:absolute;left:0;right:0;bottom:0;height:46%;
-  background:linear-gradient(to bottom,var(--void-t),var(--void) 84%)}
+  filter:grayscale(1)}
 .card figcaption{position:absolute;left:12px;bottom:11px;z-index:2;
   font-size:10px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--ash)}
 @media(max-width:860px){.card{width:min(100%,340px)}}
-/* celular: vertical y con la cara entera, sin el zoom de escritorio */
-@media(max-width:620px){
-  .card{width:100%;aspect-ratio:4/5}
-  .card-foto{left:0;top:-7%;width:100%;height:122%;object-position:50% 12%}
-}
+@media(max-width:620px){.card{width:100%;aspect-ratio:3/4}}
 
 .obra{position:relative;padding-top:clamp(56px,9vh,110px);padding-left:var(--gut);padding-right:var(--gut);padding-bottom:clamp(80px,13vh,150px)}
 .obra .grid{padding:0 var(--gut)}
@@ -1042,8 +1036,6 @@ html.form-abierto{overflow:hidden}
     </div>
     <figure class="card up">
       <img class="card-foto" src="assets/retrato.webp" alt="" width="900" height="1200" loading="lazy" decoding="async" data-vel="-44">
-      <span class="card-velo" aria-hidden="true"></span>
-      <figcaption class="mono">Montevideo · 2026</figcaption>
     </figure>
   </div>
 
