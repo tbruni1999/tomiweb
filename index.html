@@ -724,6 +724,18 @@ html.form-abierto{overflow:hidden}
   .tleyenda span{display:block;max-width:40ch;margin:7px auto 0;font-size:10.5px;text-transform:none;letter-spacing:var(--tr-text);color:var(--bone);opacity:.72}
   .tleyenda p{max-width:36ch;margin:8px auto 0;font-size:11.5px;line-height:1.6;text-transform:none;letter-spacing:var(--tr-text);color:var(--ash)}
 }
+/* celular apaisado: la banda de abajo queda muy baja y la vitrina se achicaba.
+   Vuelve el diseño de dos columnas (texto y vitrina) y la ficha se despliega en la lista, como en escritorio. */
+@media(max-width:860px) and (orientation:landscape){
+  .trofeos::after{display:none}
+  .tbloque{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;align-items:center;
+    flex:1 0 auto;padding:84px var(--pad) 24px}
+  .ttexto{max-width:none}
+  .tforma{display:block;height:1px}
+  #estante{top:0;bottom:auto;height:100%}
+  .tdet{display:grid}
+  .tleyenda{display:none}
+}
 /* --- sobre mi corto en el home --- */
 .hsobre{position:relative;padding:clamp(56px,9vh,110px) var(--gut) clamp(40px,7vh,90px)}
 .hsobre .grid{padding:0 var(--gut)}
