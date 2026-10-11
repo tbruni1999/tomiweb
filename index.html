@@ -1198,7 +1198,22 @@ document.body.classList.add('go');
     }
   }
   var TITULO=document.title;
-  addEventListener('hashchange',function(){pintar(true);});
+  // al cambiar de pagina, la actual se desvanece (200 ms) y recien despues entra la nueva.
+  // Con "reducir movimiento" o sin nada visible, el cambio es directo.
+  // la salida va con la API de animaciones (no con CSS): la pagina que se va baja su opacidad
+  var salida=null, animSalida=null;
+  function cambiar(){
+    if(animSalida){animSalida.cancel();animSalida=null;}   // se suelta antes de pintar: si no, pisa las animaciones de entrada
+    pintar(true);
+  }
+  addEventListener('hashchange',function(){
+    clearTimeout(salida);
+    if(animSalida){animSalida.cancel();animSalida=null;}
+    var visible=document.querySelector('#casos>.activo')||document.querySelector('.inicio');
+    if(!visible||!visible.animate||matchMedia('(prefers-reduced-motion:reduce)').matches){cambiar();return;}
+    animSalida=visible.animate([{opacity:1},{opacity:0}],{duration:200,easing:'ease',fill:'forwards'});
+    salida=setTimeout(cambiar,220);
+  });
   if(window.__sincronizarRuta)window.__sincronizarRuta();   // entrar directo a /#trofeos abre trofeos
   pintar(false);
 })();
