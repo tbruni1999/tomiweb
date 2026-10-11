@@ -734,7 +734,8 @@ html.form-abierto{overflow:hidden}
   .ttexto{max-width:none}
   .tforma{display:block;height:1px}
   #estante{top:0;bottom:auto;height:100%}
-  .tleyenda{left:auto;right:var(--gut);width:min(44%,400px);max-width:none;margin:0}
+  .tleyenda{left:auto;right:var(--gut);width:min(44%,400px);max-width:none;margin:0;padding:12px 16px 10px}
+  .tleyenda .tocar{margin-top:8px}
 }
 /* --- sobre mi corto en el home --- */
 .hsobre{position:relative;padding:clamp(56px,9vh,110px) var(--gut) clamp(40px,7vh,90px)}
@@ -3018,7 +3019,7 @@ window.__trazos=function(rend){
     var cx=ancho?r.left+r.width/2-c.left:w/2;
     // en apaisado la tarjeta ocupa la base de la columna derecha: el estante se encuadra por encima de ella
     var apaisado=matchMedia('(orientation:landscape)').matches&&matchMedia('(max-width:860px)').matches;
-    var arriba=ancho?100:20, abajo=ancho?(apaisado?190:44):16;
+    var arriba=ancho?(apaisado?84:100):20, abajo=ancho?(apaisado?120:44):16;   // en apaisado la tarjeta tapa solo la base
     var zonaH=Math.max(120,hh-arriba-abajo), zonaW=ancho?r.width:w*.86;
     var altoM=ALTO+.25, anchoM=ANCHO*Math.cos(.32)+FONDO*Math.sin(.32)+.25;
     var upp=Math.max(altoM/zonaH,anchoM/zonaW)*1.08;     // unidades de mundo por pixel
