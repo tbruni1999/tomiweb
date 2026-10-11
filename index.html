@@ -3113,11 +3113,17 @@ window.__trazos=function(rend){
     // en celular la placa se escribe encima de la estanteria: ahi se apaga casi del todo
     var opM=elegido?(movil?.06:.13):tMueble.op;
     tMueble.nucleo.opacity+=(opM-tMueble.nucleo.opacity)*.1;
+    // el nuevo trofeo espera a que el anterior vuelva a su repisa: dos al frente a la vez se pisaban y parpadeaban
+    var ocupado=false;
+    for(var j=0;j<piezas.length;j++){
+      var o=piezas[j];
+      if(o!==elegido&&(o.position.distanceToSquared(o.userData.inicio)>4e-4||Math.abs(o.scale.x-1)>.02))ocupado=true;
+    }
     for(var i=0;i<piezas.length;i++){
-      var g=piezas[i], u=g.userData, sel=g===elegido;
+      var g=piezas[i], u=g.userData, sel=g===elegido, al_frente=sel&&!ocupado;
       // destino: en su repisa, o adelante y al medio
       var kObj=1;
-      if(sel&&movil){
+      if(al_frente&&movil){
         // celular: a mitad de camino hacia la camara, centrado en el hueco que deja la placa
         var hh=cv.clientHeight, ww=cv.clientWidth, D=d0*.42, vis=2*D*tanF;
         var arriba=24, abajo=hh-(placa&&placa.offsetHeight?placa.offsetHeight+44:150);
@@ -3125,7 +3131,7 @@ window.__trazos=function(rend){
         kObj=Math.min(zona*.7/hh*vis/u.alto, ww*.54/hh*vis/u.ancho);
         frente.set(camX,camY+(hh/2-(arriba+abajo)/2)/hh*vis-kObj*u.alto/2,d0-D);
         mueble.worldToLocal(frente);
-      }else if(sel){kObj=2.5; frente.set(0,-.75,1.7); mueble.worldToLocal(frente);}
+      }else if(al_frente){kObj=2.5; frente.set(0,-.75,1.7); mueble.worldToLocal(frente);}
       else frente.copy(u.inicio);
       g.position.lerp(frente,.1);
       g.scale.setScalar(g.scale.x+(kObj-g.scale.x)*.1);
