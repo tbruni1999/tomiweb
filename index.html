@@ -725,7 +725,8 @@ html.form-abierto{overflow:hidden}
   .tleyenda p{max-width:36ch;margin:8px auto 0;font-size:11.5px;line-height:1.6;text-transform:none;letter-spacing:var(--tr-text);color:var(--ash)}
 }
 /* celular apaisado: la banda de abajo queda muy baja y la vitrina se achicaba.
-   Vuelve el diseño de dos columnas (texto y vitrina) y la ficha se despliega en la lista, como en escritorio. */
+   Vuelve el diseño de dos columnas (texto y vitrina). La ficha va en la tarjeta de la columna derecha,
+   no en la lista: si la lista se despliega, la sección cambia de alto y el canvas se vacía en cada cuadro. */
 @media(max-width:860px) and (orientation:landscape){
   .trofeos::after{display:none}
   .tbloque{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;align-items:center;
@@ -733,8 +734,7 @@ html.form-abierto{overflow:hidden}
   .ttexto{max-width:none}
   .tforma{display:block;height:1px}
   #estante{top:0;bottom:auto;height:100%}
-  .tdet{display:grid}
-  .tleyenda{display:none}
+  .tleyenda{left:auto;right:var(--gut);width:min(44%,400px);max-width:none;margin:0}
 }
 /* --- sobre mi corto en el home --- */
 .hsobre{position:relative;padding:clamp(56px,9vh,110px) var(--gut) clamp(40px,7vh,90px)}
@@ -3016,7 +3016,9 @@ window.__trazos=function(rend){
     var c=cv.getBoundingClientRect(), r=ranura&&ranura.getBoundingClientRect();
     var ancho=!!(r&&r.width>60); movil=!ancho;
     var cx=ancho?r.left+r.width/2-c.left:w/2;
-    var arriba=ancho?100:20, abajo=ancho?44:16;
+    // en apaisado la tarjeta ocupa la base de la columna derecha: el estante se encuadra por encima de ella
+    var apaisado=matchMedia('(orientation:landscape)').matches&&matchMedia('(max-width:860px)').matches;
+    var arriba=ancho?100:20, abajo=ancho?(apaisado?190:44):16;
     var zonaH=Math.max(120,hh-arriba-abajo), zonaW=ancho?r.width:w*.86;
     var altoM=ALTO+.25, anchoM=ANCHO*Math.cos(.32)+FONDO*Math.sin(.32)+.25;
     var upp=Math.max(altoM/zonaH,anchoM/zonaW)*1.08;     // unidades de mundo por pixel
