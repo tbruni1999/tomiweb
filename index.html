@@ -2825,7 +2825,7 @@ window.__trazos=function(rend){
   var seccion=document.getElementById('trofeos');
   if(!cv||!seccion||typeof THREE==='undefined')return;
   var rend;
-  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance'});}catch(e){return;}
+  try{rend=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:true});}catch(e){return;}
   rend.setPixelRatio(Math.min(devicePixelRatio,innerWidth<860?1.5:2));
   rend.outputEncoding=THREE.sRGBEncoding;
   rend.setClearAlpha(0);
@@ -3006,8 +3006,12 @@ window.__trazos=function(rend){
 
   // --- encuadre: la estanteria entra entera en su columna (.tforma), debajo de la barra
   var ranura=document.querySelector('.tforma'), camX=0, camY=0, d0=8, movil=false;
+  var ultW=0, ultH=0;
   function fit(){
     var w=cv.clientWidth,hh=cv.clientHeight; if(!w||!hh)return;
+    // solo se reencuadra si el tamaño cambió de verdad: redimensionar el canvas vacía su contenido
+    if(w===ultW&&hh===ultH)return;
+    ultW=w; ultH=hh;
     cam.aspect=w/hh;
     var c=cv.getBoundingClientRect(), r=ranura&&ranura.getBoundingClientRect();
     var ancho=!!(r&&r.width>60); movil=!ancho;
