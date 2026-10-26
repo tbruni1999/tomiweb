@@ -431,9 +431,12 @@ body.viendo-caso #casos{display:block}
 .scapitulo:last-of-type{border-bottom:0}
 .sbloque{max-width:600px}
 .scap{display:block;color:var(--rim);margin-bottom:clamp(14px,2.2vh,22px)}
-.stitulo{display:flex;align-items:center;gap:clamp(14px,2vw,26px);margin-bottom:clamp(22px,3.4vh,36px)}
-.stitulo .ctitulo{margin:0}
-.sforma{flex:0 0 auto;display:block;width:clamp(58px,6.4vw,92px);height:clamp(58px,6.4vw,92px)}
+.sobre .ctitulo{margin-bottom:clamp(20px,3vh,32px)}
+/* un solo bloque: texto y habilidades en una columna, la foto al costado de las dos */
+.sunico{grid-template-areas:"texto foto" "hab foto";row-gap:clamp(36px,6vh,56px)}
+.sunico .sbloque{grid-area:texto}
+.sunico .card{grid-area:foto}
+.shabc{grid-area:hab;max-width:600px}
 @media(min-width:861px){.sobre .ctitulo,.trofeos .ctitulo{font-size:clamp(28px,3.2vw,46px)}}
 .sbloque .note{margin-bottom:16px}
 .sdatos{display:flex;flex-direction:column;gap:5px;margin-top:clamp(14px,2.4vh,26px)}
@@ -445,11 +448,8 @@ body.viendo-caso #casos{display:block}
   letter-spacing:var(--tr-caps);color:var(--bone);margin-bottom:3px}
 @media(max-width:860px){
   .scapitulo{grid-template-columns:minmax(0,1fr)}
-  .sbloque{max-width:none}
-}
-@media(max-width:620px){
-  .stitulo{gap:12px}
-  .sforma{width:44px;height:44px}
+  .sunico{grid-template-areas:"texto" "foto" "hab"}
+  .sbloque,.shabc{max-width:none}
 }
 
 /* --- foto del primer capitulo --- */
@@ -1041,11 +1041,11 @@ html.form-abierto{overflow:hidden}
     <b class="mono">Sobre mí</b>
   </div>
 
-  <!-- cada titulo lleva su forma: 01 esfera, 02 cubo (se arma desde la anterior al entrar en pantalla) -->
-  <div class="scapitulo">
+  <!-- todo en un bloque: texto y habilidades a la izquierda, la foto al costado (en celular, la foto entre ambos) -->
+  <div class="scapitulo sunico">
     <div class="sbloque">
-      <span class="scap mono">01 — Quién soy</span>
-      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Tiempo y práctica:<br><u>así llegué acá.</u></h2></div>
+      <span class="scap mono">Quién soy</span>
+      <h2 class="ctitulo">Tiempo y práctica:<br><u>así llegué acá.</u></h2>
       <p class="note">Soy Tomás, diseñador UX/UI en Montevideo. Desde 2016 diseño interfaces y sitios web
       de punta a punta, con motion para que se entiendan mejor y 3D cuando suma. Trabajo solo o
       armando equipo según el proyecto.</p>
@@ -1057,18 +1057,14 @@ html.form-abierto{overflow:hidden}
     <figure class="card up">
       <img class="card-foto" src="assets/retrato.webp" alt="" width="900" height="1200" loading="lazy" decoding="async" data-vel="-44">
     </figure>
-  </div>
-
-  <div class="scapitulo">
-    <div class="sbloque">
-      <span class="scap mono">02 — Habilidades</span>
-      <div class="stitulo"><canvas class="sforma" aria-hidden="true"></canvas><h2 class="ctitulo">Lo que<br><u>sé hacer.</u></h2></div>
-    </div>
-    <div class="shab">
-      <span class="mono"><b>UX/UI</b> Research · Flujos · UI · Design systems</span>
-      <span class="mono"><b>Motion UX/UI</b> Microinteracciones · Prototipos animados · Transiciones</span>
-      <span class="mono"><b>3D</b> Modelado · Render · Animación</span>
-      <span class="mono"><b>Herramientas</b> Figma · Illustrator · Photoshop · Claude · GitHub</span>
+    <div class="shabc">
+      <span class="scap mono">Lo que sé hacer</span>
+      <div class="shab">
+        <span class="mono"><b>UX/UI</b> Research · Flujos · UI · Design systems</span>
+        <span class="mono"><b>Motion UX/UI</b> Microinteracciones · Prototipos animados · Transiciones</span>
+        <span class="mono"><b>3D</b> Modelado · Render · Animación</span>
+        <span class="mono"><b>Herramientas</b> Figma · Illustrator · Photoshop · Claude · GitHub</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1989,119 +1985,6 @@ window.__trazos=function(rend){
 })();
 </script>
 
-<script>
-/* --- formas de sobre mi: una chiquita al lado de cada titulo (01 esfera · 02 cubo · 03 piramide).
-   Un solo contexto WebGL dibuja las tres y cada titulo copia su cuadro a su propio canvas 2D.
-   Al entrar en pantalla, cada forma se arma desde la anterior (la primera, desde afuera). --- */
-(function(){
-  var vistas=[].slice.call(document.querySelectorAll('canvas.sforma'));
-  if(!vistas.length||typeof THREE==='undefined')return;
-  var lienzo=document.createElement('canvas'),rend;
-  try{rend=new THREE.WebGLRenderer({canvas:lienzo,alpha:true,antialias:true});}catch(e){return;}
-  rend.outputEncoding=THREE.sRGBEncoding;
-  rend.setClearColor(0x000000,0);
-
-  var scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(30,1,.1,100);
-  var N=34, R=2.05, LADO=.74, CUBO=2.2;     // CUBO = media arista
-  var PW=2.6, PA=3.2, PB=1.6;               // piramide: media base, vertice, base
-  var TONOS=[0xFF5A14,0xF24E0C,0xFF6A26,0xE04408,0xFF7A3D,0xD63E06];
-  // encuadre de cada forma: cuanto mide y donde queda su centro
-  var EXT=[2.75,3.45,3.35], CY=[0,0,.75];
-  scene.add(new THREE.AmbientLight(0xffffff,.36));
-  var luz=new THREE.DirectionalLight(0xffffff,.66); luz.position.set(3,4,5); scene.add(luz);
-  var luz2=new THREE.DirectionalLight(0xFFB48A,.24); luz2.position.set(-4,-2,-3); scene.add(luz2);
-
-  var grupo=new THREE.Group(); scene.add(grupo);
-  var geo=new THREE.BoxGeometry(LADO,LADO,.05);
-  var marco=new THREE.EdgesGeometry(geo);
-  var AUREO=Math.PI*(1+Math.sqrt(5));
-  var piezas=[],guia=new THREE.Object3D();
-  var caras=[
-    new THREE.Vector3(PA+PB,PW,0).normalize(), new THREE.Vector3(-(PA+PB),PW,0).normalize(),
-    new THREE.Vector3(0,PW,PA+PB).normalize(), new THREE.Vector3(0,PW,-(PA+PB)).normalize(),
-    new THREE.Vector3(0,-1,0)];
-  function orientar(p,n){guia.position.copy(p); guia.lookAt(p.clone().add(n)); return guia.quaternion.clone();}
-  for(var i=0;i<N;i++){
-    var phi=Math.acos(1-2*(i+.5)/N), th=AUREO*(i+.5);
-    var dir=new THREE.Vector3(Math.cos(th)*Math.sin(phi),Math.cos(phi),Math.sin(th)*Math.sin(phi));
-    var pE=dir.clone().multiplyScalar(R);
-    // cubo: la cara dominante
-    var ax=Math.abs(dir.x),ay=Math.abs(dir.y),az=Math.abs(dir.z),mx=Math.max(ax,ay,az);
-    var pC=dir.clone().divideScalar(mx).multiplyScalar(CUBO);
-    var nC=new THREE.Vector3(mx===ax?Math.sign(dir.x):0,mx===ay?Math.sign(dir.y):0,mx===az?Math.sign(dir.z):0);
-    // piramide: la cara que el rayo alcanza primero
-    var mejor=-1e9,nP=null;
-    for(var q=0;q<caras.length;q++){
-      var f=caras[q].dot(dir)/(q<4?caras[q].y*PA:PB);
-      if(f>mejor){mejor=f;nP=caras[q];}
-    }
-    var pP=dir.clone().divideScalar(mejor);
-    var m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:TONOS[(i*7)%TONOS.length],roughness:.42,metalness:.08}));
-    m.add(new THREE.LineSegments(marco,new THREE.LineBasicMaterial({color:0xFFC4A3,transparent:true,opacity:.3})));
-    grupo.add(m);
-    piezas.push({m:m,p:[pE,pC,pP],q:[orientar(pE,dir),orientar(pC,nC),orientar(pP,nP)]});
-  }
-
-  var quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var estados=vistas.map(function(cv,i){
-    var f=Math.min(i,2);
-    return {cv:cv,ctx:cv.getContext('2d'),forma:f,desde:f-1,t0:0,visible:false,giro:.6+i*1.7};
-  });
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){
-      var s=estados[vistas.indexOf(e.target)];
-      s.visible=e.isIntersecting;
-      if(e.isIntersecting&&!s.t0)s.t0=performance.now()+150;   // arranca apenas se ve
-    });},{threshold:.5});
-    vistas.forEach(function(v){io.observe(v);});
-  }else estados.forEach(function(s){s.visible=true;s.t0=1;});
-
-  // todos los canvas miden lo mismo: el lienzo WebGL se ajusta a ese tamaño en pixeles reales
-  var tam=0;
-  function medir(){
-    var w=0; vistas.forEach(function(v){w=Math.max(w,v.clientWidth);});
-    var px=Math.round(w*Math.min(devicePixelRatio||1,2));
-    if(px&&px!==tam){tam=px; rend.setSize(px,px,false); vistas.forEach(function(v){v.width=px;v.height=px;});}
-  }
-  addEventListener('resize',medir,{passive:true});
-
-  function suave(x){return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
-  var v=new THREE.Vector3();
-  function colocar(s,e){
-    var desdeAfuera=s.desde<0, ap=desdeAfuera?(1-e)*1.8:Math.sin(Math.PI*e)*.2;
-    for(var k=0;k<piezas.length;k++){
-      var z=piezas[k], b=z.p[s.forma];
-      if(desdeAfuera){v.copy(b); z.m.quaternion.copy(z.q[s.forma]);}
-      else{v.copy(z.p[s.desde]).lerp(b,e); z.m.quaternion.copy(z.q[s.desde]).slerp(z.q[s.forma],e);}
-      z.m.position.copy(v.multiplyScalar(1+ap));
-    }
-    // la camara acompaña el tamaño de la forma del momento
-    var a=desdeAfuera?s.forma:s.desde, ext=EXT[a]+(EXT[s.forma]-EXT[a])*e, cy=CY[a]+(CY[s.forma]-CY[a])*e;
-    var d=ext/Math.tan(THREE.MathUtils.degToRad(cam.fov/2));
-    cam.position.set(0,cy+d*.12,d); cam.lookAt(0,cy,0);
-  }
-
-  var avisado=false;
-  (function loop(now){
-    requestAnimationFrame(loop);
-    try{
-      if(!tam)medir();
-      if(!tam)return;                       // la pagina todavia no esta a la vista
-      for(var i=0;i<estados.length;i++){
-        var s=estados[i];
-        if(!s.visible)continue;
-        var e=quieto?1:(!s.t0||now<s.t0?0:Math.min(1,(now-s.t0)/1500));
-        colocar(s,suave(e));
-        if(!quieto)s.giro+=.006;
-        grupo.rotation.set(0,s.giro,0);
-        rend.render(scene,cam);
-        s.ctx.clearRect(0,0,tam,tam);
-        s.ctx.drawImage(lienzo,0,0);
-      }
-    }catch(err){ if(!avisado){avisado=true;console.warn('formas 3D:',err.message);} }
-  })(0);
-})();
-</script>
 <script>
 /* --- minijuego: clic en la espada, pendulo sobre el cursor y pelotas que caen --- */
 (function(){
