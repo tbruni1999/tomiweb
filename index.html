@@ -187,8 +187,6 @@ h1 u{text-decoration:none;font-weight:600}
   background:linear-gradient(calc(140deg + var(--lx)*70deg),#FFFFFF 0%,var(--bone) 34%,#8C8880 78%,#4E4B47 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 
-.works b{color:var(--bone)}
-.works b{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:var(--tr-caps);text-transform:uppercase;color:var(--bone)}
 
 .rise{opacity:0;transform:translateY(26px)}
 .go .rise{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
@@ -511,7 +509,10 @@ body.viendo-caso #casos{display:block}
   .pcab{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,2.2vh,26px);
     padding:18px 0 0;border-top:1px solid var(--line)}
   .proj:nth-of-type(even) .pcab{order:2;align-items:flex-end;text-align:right}
-  .pt{margin-top:auto;font-size:clamp(44px,4.1vw,108px);line-height:.86}
+  .pt{margin-top:0;font-size:clamp(44px,4.1vw,108px);line-height:.86}
+  /* titulo, datos y boton arriba; el numero abajo de todo */
+  .pcab .pn{order:9;margin-top:auto;align-self:inherit}
+  .proj:nth-of-type(even) .pcab .pn{align-self:flex-end}
   .pdat{text-align:inherit}
   /* si la pantalla es muy ancha y baja, la portada se achica y queda pegada al borde de la pagina */
   .ptapa{width:100%;max-width:calc(82svh*1.6);justify-self:end}
@@ -908,9 +909,7 @@ html.form-abierto{overflow:hidden}
   </section>
 
   <footer class="foot rise d5">
-    <div class="meta">
-      <b class="mono works">Trabajos [03]</b>
-    </div>
+    <div class="meta" aria-hidden="true"></div>
     <div class="wordwrap">
       <h2 class="word" id="word" aria-label="Tomás Bruni">
         <span class="rimly" aria-hidden="true">BRUN<em class="i">I</em></span>
